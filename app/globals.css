@@ -1,0 +1,784 @@
+@import "tailwindcss";
+
+/* =====================================================
+   DESIGN SYSTEM — PADARIA BELLA
+   Tailwind CSS v4 (CSS-based config with @theme)
+   ===================================================== */
+
+@theme {
+  /* Paleta de Cores */
+  --color-creme-50: #fdfaf5;
+  --color-creme-100: #f5ead6;
+  --color-creme-200: #e8d5b0;
+  --color-creme-300: #d9bc85;
+
+  --color-marrom-50: #faf6f0;
+  --color-marrom-100: #f0e4d0;
+  --color-marrom-200: #d9c4a0;
+  --color-marrom-300: #b89470;
+  --color-marrom-400: #9a7050;
+  --color-marrom-500: #7c5c2e;
+  --color-marrom-600: #634a24;
+  --color-marrom-700: #4a371c;
+  --color-marrom-800: #322514;
+  --color-marrom-900: #1c1208;
+
+  --color-dourado-400: #a4865c;
+  --color-dourado-500: #8f704b;
+  --color-dourado-600: #73593a;
+  --color-dourado-700: #59452d;
+
+  --color-verde-sucesso: #2e7d32;
+  --color-vermelho-erro: #c62828;
+
+  /* Fontes */
+  --font-display: var(--font-playfair, 'Playfair Display', Georgia, serif);
+  --font-sans: var(--font-inter, 'Inter', system-ui, sans-serif);
+
+  /* Border radius */
+  --radius-card: 1rem;
+  --radius-btn: 0.75rem;
+
+  /* Shadows */
+  --shadow-card: none;
+  --shadow-card-hover: none;
+  --shadow-btn: none;
+}
+
+/* =====================================================
+   VARIÁVEIS SEMÂNTICAS GLOBAIS
+   ===================================================== */
+
+:root {
+  --bg-principal: #f7f7f8;
+  --bg-card: #ffffff;
+  --bg-card-hover: #fafafa;
+  --text-primario: #18171a;
+  --text-secundario: #555260;
+  --text-terciario: #888597;
+  --borda: #e4e2ea;
+  --primaria: #de752d;
+  --primaria-hover: #c4621f;
+  --primaria-texto: #ffffff;
+}
+
+/* =====================================================
+   RESET E BASE
+   ===================================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+input, textarea, select, button {
+  font-family: inherit;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--bg-principal);
+  color: var(--text-primario);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100dvh;
+}
+
+/* =====================================================
+   TIPOGRAFIA
+   ===================================================== */
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+h1, h2, h3, .heading {
+  font-family: var(--font-sans);
+  color: var(--text-primario);
+}
+
+/* =====================================================
+   COMPONENTES CUSTOMIZADOS
+   ===================================================== */
+
+/* Botão Primário */
+.btn-primario {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.75rem;
+  background: var(--primaria);
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: var(--radius-btn);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  min-height: 52px;
+}
+
+.btn-primario:hover {
+  background: var(--primaria-hover);
+}
+
+.btn-primario:active {
+  transform: translateY(0);
+}
+
+.btn-primario:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Botão Secundário */
+.btn-secundario {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  color: var(--primaria);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border-radius: var(--radius-btn);
+  border: 2px solid var(--primaria);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 48px;
+}
+
+.btn-secundario:hover {
+  background: rgba(200, 134, 10, 0.08);
+}
+
+/* Botão Quantidade (+ e -) — rounded square */
+.btn-quantidade {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 1.1rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.btn-quantidade-mais {
+  background: var(--primaria);
+  color: white;
+}
+
+.btn-quantidade-mais:hover {
+  transform: translateY(-1px);
+  background: var(--primaria-hover);
+}
+
+.btn-quantidade-menos {
+  background: #f1f1f4;
+  color: #555260;
+}
+
+.btn-quantidade-menos:hover {
+  background: #e2e2e8;
+}
+
+/* Card de Produto */
+.card-produto {
+  background: var(--bg-card);
+  border-radius: var(--radius-card);
+  border: 1px solid #ebebef;
+  transition: all 0.25s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.card-produto:hover {
+  transform: translateY(-2px);
+  border-color: #d4d2dc;
+}
+
+/* Badge Destaque */
+.badge-destaque {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+}
+
+/* Card do Carrinho */
+.cart-drawer {
+  background: var(--bg-card);
+  border-left: 1px solid var(--borda);
+}
+
+/* Input do formulário */
+.input-campo {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 1.5px solid #e2e2e8;
+  border-radius: 0.75rem;
+  background: white;
+  color: var(--text-primario);
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+  outline: none;
+  min-height: 44px;
+}
+
+.input-campo:focus {
+  border-color: var(--primaria);
+}
+
+.input-campo::placeholder {
+  color: #aaa8b8;
+}
+
+/* =====================================================
+   SCROLLBAR CUSTOMIZADA
+   ===================================================== */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f4;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d4d2dc;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b5b3c2;
+}
+
+/* =====================================================
+   ANIMAÇÕES
+   ===================================================== */
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-bottom {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes bounce-in {
+  0% { transform: scale(0.8); opacity: 0; }
+  60% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+@keyframes pulse-dourado {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease both;
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes status-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.9); }
+}
+
+@keyframes modal-backdrop-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modal-content-show {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes slide-in-top {
+  from { transform: translate(-50%, -20px); opacity: 0; }
+  to { transform: translate(-50%, 0); opacity: 1; }
+}
+
+/* =====================================================
+   UTILITÁRIOS DE HOVER (substitui JS onMouseEnter/Leave)
+   ===================================================== */
+
+.voltar-link {
+  transition: color 0.2s ease;
+}
+.voltar-link:hover {
+  color: #18171a !important;
+}
+
+.link-hover-dark {
+  transition: color 0.2s ease;
+}
+.link-hover-dark:hover {
+  color: #8f704b !important;
+}
+
+.link-hover-primaria {
+  transition: color 0.2s ease;
+}
+.link-hover-primaria:hover {
+  color: #73593a !important;
+}
+
+.btn-elevate {
+  transition: transform 0.2s ease;
+}
+.btn-elevate:hover {
+  transform: translateY(-1px);
+}
+
+.btn-info-loja {
+  transition: all 0.2s ease;
+}
+.btn-info-loja:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: white !important;
+}
+
+.btn-empresa-loja {
+  transition: all 0.2s ease;
+}
+.btn-empresa-loja:hover {
+  background: rgba(255, 208, 67, 0.45) !important;
+  color: #ffd043 !important;
+}
+
+.btn-fechar-hover {
+  transition: all 0.2s;
+}
+.btn-fechar-hover:hover {
+  background: #f1f1f4 !important;
+  color: #18171a !important;
+}
+
+/* =====================================================
+   ADMIN — SIDEBAR LAYOUT (DESKTOP sticky / MOBILE drawer)
+   ===================================================== */
+
+/* Desktop (≥1024px): sidebar fica no fluxo, sticky */
+.admin-sidebar-root {
+  width: 220px;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 0.875rem;
+  flex-shrink: 0;
+}
+
+/* Topbar mobile só aparece em telas pequenas */
+.admin-topbar {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  /* No mobile a sidebar vira drawer fixo */
+  .admin-sidebar-root {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    z-index: 50;
+    height: calc(100dvh - 56px);
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .admin-sidebar-root.sidebar-open {
+    transform: translateX(0);
+  }
+
+  /* Topbar aparece no mobile */
+  .admin-topbar {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 60;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* Desktop: sticky no topo */
+  .admin-sidebar-root {
+    position: sticky;
+    top: 0;
+    height: 100dvh;
+    align-self: flex-start;
+  }
+}
+
+
+.admin-sidebar {
+  background: linear-gradient(180deg, #1c1208 0%, #2d1e0f 100%);
+  color: #e8d5b0;
+}
+
+.admin-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.625rem;
+  color: #b89470;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.admin-sidebar-item:hover {
+  background: rgba(200, 134, 10, 0.15);
+  color: #e6a420;
+}
+
+.admin-sidebar-item.ativo {
+  background: rgba(200, 134, 10, 0.2);
+  color: #e6a420;
+  border-left: 3px solid #c8860a;
+}
+
+/* Kanban */
+.kanban-coluna {
+  background: #eeedf4;
+  border-radius: 1rem;
+  min-height: 300px;
+}
+
+.kanban-card {
+  background: white;
+  border-radius: 0.75rem;
+  border: 1px solid var(--borda);
+  transition: all 0.2s ease;
+}
+
+.kanban-card:hover {
+  border: 1px solid var(--borda);
+}
+
+/* Status badges */
+.status-recebido {
+  background: #fff4e5;
+  color: #c05e00;
+}
+
+.status-preparando {
+  background: #e8f0fe;
+  color: #1a56db;
+}
+
+.status-saiu {
+  background: #f3e8ff;
+  color: #7c3aed;
+}
+
+.status-entregue {
+  background: #e6f4ea;
+  color: #1e7e34;
+}
+
+/* =====================================================
+   GRID RESPONSIVO DE PRODUTOS
+   ===================================================== */
+
+.grid-produtos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.875rem;
+}
+
+@media (min-width: 380px) {
+  .grid-produtos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 640px) {
+  .grid-produtos {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .grid-produtos {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* =====================================================
+   TRACKER DE PEDIDO
+   ===================================================== */
+
+.tracker-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  position: relative;
+}
+
+.tracker-step-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.tracker-step.modal-container {
+  background: white;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  position: relative;
+  border: 1px solid var(--borda);
+}
+
+.tracker-step-icon.ativo {
+  background: var(--primaria);
+  color: white;
+  animation: pulse-dourado 2s infinite;
+}
+
+.tracker-step-icon.concluido {
+  background: var(--verde-sucesso);
+  color: white;
+}
+
+.tracker-step-icon.pendente {
+  background: #f0e4d0;
+  color: #b89470;
+}
+
+.tracker-linha {
+  position: absolute;
+  top: 24px;
+  left: calc(50% + 24px);
+  right: calc(-50% + 24px);
+  height: 2px;
+  background: #e8d5b0;
+}
+
+
+.tracker-linha.concluida {
+  background: linear-gradient(90deg, #2e7d32, #c8860a);
+}
+
+/* =====================================================
+   FORMULÁRIOS — INPUT, BOTÕES
+   ===================================================== */
+
+.input-campo {
+  width: 100%;
+  padding: 0.65rem 0.875rem;
+  border-radius: 0.625rem;
+  border: 1px solid var(--borda);
+  background: white;
+  font-size: 0.9rem;
+  color: var(--text-primario);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.input-campo:focus {
+  border-color: var(--primaria);
+  box-shadow: 0 0 0 3px rgba(200, 134, 10, 0.12);
+}
+
+/* Input de Pesquisa Padronizado (mesmo visual do SelectFiltro) */
+.input-pesquisa {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--borda);
+  background-color: var(--bg-card);
+  font-size: 0.9rem;
+  outline: none;
+  color: var(--text-primario);
+  min-height: 44px;
+  transition: all 0.2s ease;
+}
+
+.input-pesquisa:focus {
+  box-shadow: 0 0 0 3px rgba(200, 134, 10, 0.08);
+}
+
+/* Select Customizado para Filtros */
+.select-filtro {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  background-color: var(--bg-card) !important;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888597' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 1rem center !important;
+  background-size: 1.1rem;
+  padding: 0.75rem 2.5rem 0.75rem 1rem !important;
+  border-radius: 0.75rem;
+  border: 1px solid var(--borda);
+  font-size: 0.9rem;
+  color: var(--text-primario);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.select-filtro.aberto {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888597' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='18 15 12 9 6 15'%3E%3C/polyline%3E%3C/svg%3E") !important;
+}
+
+.select-filtro:focus {
+  border-color: var(--borda) !important;
+  box-shadow: none !important;
+}
+
+.btn-primario {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 0.75rem;
+  background: var(--primaria);
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+.btn-primario:hover {
+  background: var(--primaria-hover);
+}
+
+.btn-primario:active {
+  transform: scale(0.98);
+}
+
+.btn-secundario {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 0.75rem;
+  background: white;
+  color: var(--text-primario);
+  font-weight: 600;
+  font-size: 0.875rem;
+  border: 1px solid var(--borda);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+.btn-secundario:hover {
+  background: var(--bg-principal);
+  border-color: var(--text-terciario);
+}
+
+/* Kanban — melhorar drag cursor */
+.kanban-card {
+  cursor: grab !important;
+}
+
+.kanban-card:active {
+  cursor: grabbing !important;
+}
+
+/* =====================================================
+   TOASTS (Notificações)
+   ===================================================== */
+@keyframes slide-in-top {
+  0% { transform: translate(-50%, -100%); opacity: 0; }
+  100% { transform: translate(-50%, 0); opacity: 1; }
+}
+
+@keyframes slide-in-right {
+  0% { transform: translateX(100%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+.toast-cliente {
+  position: fixed;
+  z-index: 1000;
+  background: var(--color-verde-sucesso);
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  
+  /* Padrão (Mobile): Topo Centralizado */
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: slide-in-top 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Desktop: Canto Superior Direito */
+@media (min-width: 768px) {
+  .toast-cliente {
+    top: 24px;
+    left: auto;
+    right: 24px;
+    transform: none;
+    animation: slide-in-right 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
