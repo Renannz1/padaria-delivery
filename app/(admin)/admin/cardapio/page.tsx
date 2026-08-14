@@ -841,16 +841,6 @@ export default function CardapioPage() {
             {isCarregando ? '\u00A0' : `${produtos.length} produtos · ${produtos.filter((p) => p.esgotado).length} esgotados`}
           </p>
         </div>
-        <div>
-          <button
-            onClick={() => setModalGerenciarCategoriasAberto(true)}
-            className="btn-secundario"
-            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 600 }}
-          >
-            <Tags size={18} />
-            Gerenciar Categorias
-          </button>
-        </div>
       </div>
 
       {/* ═══════════════════════════════════════
@@ -1063,20 +1053,33 @@ export default function CardapioPage() {
             <option value="disponiveis">Apenas Disponíveis</option>
             <option value="esgotados">Apenas Esgotados</option>
           </SelectFiltro>
-          <button
-            id="btn-novo-produto"
-            onClick={abrirNovoProduto}
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-              background: 'var(--primaria)', color: 'white',
-              padding: '0 1.25rem', borderRadius: '8px',
-              border: 'none', cursor: 'pointer', fontWeight: 600,
-              transition: 'background 0.2s', fontSize: '0.9rem',
-              minHeight: 44, marginLeft: 'auto'
-            }}
-          >
-            <Plus size={18} /> Novo Produto
-          </button>
+          <div style={{ display: 'flex', gap: '0.75rem', marginLeft: 'auto' }}>
+            <button
+              onClick={() => setModalGerenciarCategoriasAberto(true)}
+              className="btn-secundario"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+                fontWeight: 600, minHeight: 44, padding: '0 1.25rem', borderRadius: '8px',
+                fontSize: '0.9rem'
+              }}
+            >
+              <Tags size={18} /> Gerenciar Categorias
+            </button>
+            <button
+              id="btn-novo-produto"
+              onClick={abrirNovoProduto}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+                background: 'var(--primaria)', color: 'white',
+                padding: '0 1.25rem', borderRadius: '8px',
+                border: 'none', cursor: 'pointer', fontWeight: 600,
+                transition: 'background 0.2s', fontSize: '0.9rem',
+                minHeight: 44
+              }}
+            >
+              <Plus size={18} /> Novo Produto
+            </button>
+          </div>
         </div>
       )}
 
