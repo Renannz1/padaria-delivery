@@ -600,6 +600,7 @@ export default function CardapioPage() {
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null)
 
   // Estado categorias
+  const [modalGerenciarCategoriasAberto, setModalGerenciarCategoriasAberto] = useState(false)
   const [modalCategoriaAberto, setModalCategoriaAberto] = useState(false)
   const [categoriaEditando, setCategoriaEditando] = useState<Categoria | null>(null)
   const [confirmDeleteCategoria, setConfirmDeleteCategoria] = useState<Categoria | null>(null)
@@ -799,190 +800,222 @@ export default function CardapioPage() {
             {isCarregando ? '\u00A0' : `${produtos.length} produtos · ${produtos.filter((p) => p.esgotado).length} esgotados`}
           </p>
         </div>
+        <div>
+          <button
+            onClick={() => setModalGerenciarCategoriasAberto(true)}
+            className="btn-secundario"
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 600 }}
+          >
+            <Tags size={18} />
+            Gerenciar Categorias
+          </button>
+        </div>
       </div>
 
       {/* ═══════════════════════════════════════
-          Seção de Categorias
+          Modal de Gerenciamento de Categorias
       ═══════════════════════════════════════ */}
-      <div
-        style={{
-          background: 'var(--bg-card)',
-          borderRadius: '1.25rem',
-          border: '1px solid var(--borda)',
-          marginBottom: '2rem',
-          overflow: 'hidden',
-          animation: 'fade-in 0.3s ease',
-        }}
-      >
-        {/* Header da seção */}
+      {modalGerenciarCategoriasAberto && (
         <div
           style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '1.125rem 1.5rem',
-            borderBottom: '1px solid var(--borda)',
+            position: 'fixed', inset: 0, zIndex: 150,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: '1rem', background: 'rgba(28,18,8,0.65)',
+            animation: 'fade-in 0.2s ease',
           }}
+          onClick={() => setModalGerenciarCategoriasAberto(false)}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
-            <Tags size={18} color="var(--primaria)" />
-            <h2 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--text-primario)' }}>
-              Categorias
-            </h2>
-            <span
+          <div
+            style={{
+              background: 'var(--bg-card)', borderRadius: '1.25rem',
+              width: '100%', maxWidth: 640, maxHeight: '90vh', overflowY: 'auto',
+              animation: 'modal-content-show 0.25s ease',
+              border: '1px solid var(--borda)',
+              display: 'flex', flexDirection: 'column'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header da seção */}
+            <div
               style={{
-                background: 'var(--bg-principal)',
-                border: '1px solid var(--borda)',
-                borderRadius: '999px',
-                padding: '0.1rem 0.6rem',
-                fontSize: '0.75rem',
-                fontWeight: 600,
-                color: 'var(--text-secundario)',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '1.125rem 1.5rem',
+                borderBottom: '1px solid var(--borda)',
+                position: 'sticky', top: 0, background: 'var(--bg-card)', zIndex: 10
               }}
             >
-              {categorias.length}
-            </span>
-          </div>
-          <button
-            id="btn-nova-categoria"
-            onClick={abrirNovaCategoria}
-            className="btn-primario"
-            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', padding: '0.5rem 1rem' }}
-          >
-            <Plus size={16} />
-            Nova Categoria
-          </button>
-        </div>
-
-        {/* Lista de Categorias */}
-        {carregandoCategorias ? (
-          <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-terciario)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem' }}>
-            <Loader2 size={20} className="animate-spin" />
-            <span>Carregando categorias...</span>
-          </div>
-        ) : categorias.length === 0 ? (
-          <div style={{ padding: '2.5rem 1.5rem', textAlign: 'center', color: 'var(--text-terciario)' }}>
-            <Tags size={36} style={{ margin: '0 auto 0.75rem', opacity: 0.3 }} />
-            <p style={{ margin: 0, fontWeight: 600, color: 'var(--text-primario)' }}>Nenhuma categoria cadastrada</p>
-            <p style={{ margin: '0.25rem 0 0', fontSize: '0.85rem' }}>Crie uma categoria para começar a organizar o cardápio.</p>
-          </div>
-        ) : (
-          <div>
-            {categorias.map((cat, idx) => (
-              <div
-                key={cat.id}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.875rem',
-                  padding: '0.75rem 1.5rem',
-                  borderTop: idx === 0 ? 'none' : '1px solid var(--borda)',
-                  opacity: cat.ativo ? 1 : 0.55,
-                  transition: 'opacity 0.2s, background 0.2s',
-                }}
-              >
-                {/* Ícone de ordenação (visual) */}
-                <GripVertical size={16} color="var(--text-terciario)" style={{ flexShrink: 0, cursor: 'grab' }} />
-
-                {/* Ordem */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
+                <Tags size={18} color="var(--primaria)" />
+                <h2 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--text-primario)' }}>
+                  Categorias
+                </h2>
                 <span
                   style={{
-                    minWidth: 28,
-                    height: 28,
-                    borderRadius: '0.5rem',
                     background: 'var(--bg-principal)',
                     border: '1px solid var(--borda)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '0.75rem',
-                    fontWeight: 700,
-                    color: 'var(--text-secundario)',
-                    flexShrink: 0,
-                  }}
-                >
-                  {cat.ordem ?? 0}
-                </span>
-
-                {/* Nome e slug */}
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ margin: 0, fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primario)' }}>
-                    {cat.nome}
-                  </p>
-                  <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--text-terciario)', fontFamily: 'monospace' }}>
-                    {cat.id}
-                  </p>
-                </div>
-
-                {/* Badge ativo/inativo */}
-                <span
-                  style={{
-                    padding: '0.2rem 0.6rem',
                     borderRadius: '999px',
-                    fontSize: '0.72rem',
-                    fontWeight: 700,
-                    background: cat.ativo ? '#f0faf0' : '#fef0f0',
-                    color: cat.ativo ? '#2e7d32' : '#c62828',
-                    border: `1px solid ${cat.ativo ? '#b8ddb8' : '#f8d0d0'}`,
-                    flexShrink: 0,
+                    padding: '0.1rem 0.6rem',
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                    color: 'var(--text-secundario)',
                   }}
                 >
-                  {cat.ativo ? 'Ativa' : 'Inativa'}
+                  {categorias.length}
                 </span>
-
-                {/* Ações */}
-                <div style={{ display: 'flex', gap: '0.375rem', flexShrink: 0 }}>
-                  {/* Toggle ativo */}
-                  <button
-                    onClick={() => handleToggleAtivoCategoria(cat)}
-                    title={cat.ativo ? 'Desativar categoria' : 'Ativar categoria'}
-                    style={{
-                      background: cat.ativo ? '#f0f9f0' : '#fff4e5',
-                      border: `1px solid ${cat.ativo ? '#b8ddb8' : '#f0d0a0'}`,
-                      borderRadius: '0.5rem',
-                      width: 34, height: 34,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      cursor: 'pointer',
-                      color: cat.ativo ? '#2e7d32' : '#c05e00',
-                      transition: 'all 0.2s',
-                    }}
-                  >
-                    {cat.ativo ? <ToggleRight size={16} /> : <ToggleLeft size={16} />}
-                  </button>
-
-                  {/* Editar */}
-                  <button
-                    onClick={() => abrirEditarCategoria(cat)}
-                    title="Editar"
-                    style={{
-                      background: '#f0f0f8', border: '1px solid #e0e0ee',
-                      borderRadius: '0.5rem', width: 34, height: 34,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      cursor: 'pointer', color: '#555260', transition: 'all 0.2s',
-                    }}
-                  >
-                    <Pencil size={15} />
-                  </button>
-
-                  {/* Excluir */}
-                  <button
-                    onClick={() => setConfirmDeleteCategoria(cat)}
-                    title="Excluir categoria"
-                    style={{
-                      background: '#fef0f0', border: '1px solid #f8d0d0',
-                      borderRadius: '0.5rem', width: 34, height: 34,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      cursor: 'pointer', color: '#c62828', transition: 'all 0.2s',
-                    }}
-                  >
-                    <Trash2 size={15} />
-                  </button>
-                </div>
               </div>
-            ))}
+              <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                <button
+                  id="btn-nova-categoria"
+                  onClick={abrirNovaCategoria}
+                  className="btn-primario"
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', padding: '0.5rem 1rem' }}
+                >
+                  <Plus size={16} />
+                  Nova Categoria
+                </button>
+                <button
+                  onClick={() => setModalGerenciarCategoriasAberto(false)}
+                  className="btn-fechar-hover"
+                  style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-terciario)', borderRadius: '50%', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                >
+                  <X size={18} />
+                </button>
+              </div>
+            </div>
+
+            {/* Lista de Categorias */}
+            {carregandoCategorias ? (
+              <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-terciario)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem' }}>
+                <Loader2 size={20} className="animate-spin" />
+                <span>Carregando categorias...</span>
+              </div>
+            ) : categorias.length === 0 ? (
+              <div style={{ padding: '2.5rem 1.5rem', textAlign: 'center', color: 'var(--text-terciario)' }}>
+                <Tags size={36} style={{ margin: '0 auto 0.75rem', opacity: 0.3 }} />
+                <p style={{ margin: 0, fontWeight: 600, color: 'var(--text-primario)' }}>Nenhuma categoria cadastrada</p>
+                <p style={{ margin: '0.25rem 0 0', fontSize: '0.85rem' }}>Crie uma categoria para começar a organizar o cardápio.</p>
+              </div>
+            ) : (
+              <div>
+                {categorias.map((cat, idx) => (
+                  <div
+                    key={cat.id}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.875rem',
+                      padding: '0.75rem 1.5rem',
+                      borderTop: idx === 0 ? 'none' : '1px solid var(--borda)',
+                      opacity: cat.ativo ? 1 : 0.55,
+                      transition: 'opacity 0.2s, background 0.2s',
+                    }}
+                  >
+                    {/* Ícone de ordenação (visual) */}
+                    <GripVertical size={16} color="var(--text-terciario)" style={{ flexShrink: 0, cursor: 'grab' }} />
+
+                    {/* Ordem */}
+                    <span
+                      style={{
+                        minWidth: 28,
+                        height: 28,
+                        borderRadius: '0.5rem',
+                        background: 'var(--bg-principal)',
+                        border: '1px solid var(--borda)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        color: 'var(--text-secundario)',
+                        flexShrink: 0,
+                      }}
+                    >
+                      {cat.ordem ?? 0}
+                    </span>
+
+                    {/* Nome e slug */}
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{ margin: 0, fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primario)' }}>
+                        {cat.nome}
+                      </p>
+                      <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--text-terciario)', fontFamily: 'monospace' }}>
+                        {cat.id}
+                      </p>
+                    </div>
+
+                    {/* Badge ativo/inativo */}
+                    <span
+                      style={{
+                        padding: '0.2rem 0.6rem',
+                        borderRadius: '999px',
+                        fontSize: '0.72rem',
+                        fontWeight: 700,
+                        background: cat.ativo ? '#f0faf0' : '#fef0f0',
+                        color: cat.ativo ? '#2e7d32' : '#c62828',
+                        border: `1px solid ${cat.ativo ? '#b8ddb8' : '#f8d0d0'}`,
+                        flexShrink: 0,
+                      }}
+                    >
+                      {cat.ativo ? 'Ativa' : 'Inativa'}
+                    </span>
+
+                    {/* Ações */}
+                    <div style={{ display: 'flex', gap: '0.375rem', flexShrink: 0 }}>
+                      {/* Toggle ativo */}
+                      <button
+                        onClick={() => handleToggleAtivoCategoria(cat)}
+                        title={cat.ativo ? 'Desativar categoria' : 'Ativar categoria'}
+                        style={{
+                          background: cat.ativo ? '#f0f9f0' : '#fff4e5',
+                          border: `1px solid ${cat.ativo ? '#b8ddb8' : '#f0d0a0'}`,
+                          borderRadius: '0.5rem',
+                          width: 34, height: 34,
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          cursor: 'pointer',
+                          color: cat.ativo ? '#2e7d32' : '#c05e00',
+                          transition: 'all 0.2s',
+                        }}
+                      >
+                        {cat.ativo ? <ToggleRight size={16} /> : <ToggleLeft size={16} />}
+                      </button>
+
+                      {/* Editar */}
+                      <button
+                        onClick={() => abrirEditarCategoria(cat)}
+                        title="Editar"
+                        style={{
+                          background: '#f0f0f8', border: '1px solid #e0e0ee',
+                          borderRadius: '0.5rem', width: 34, height: 34,
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          cursor: 'pointer', color: '#555260', transition: 'all 0.2s',
+                        }}
+                      >
+                        <Pencil size={15} />
+                      </button>
+
+                      {/* Excluir */}
+                      <button
+                        onClick={() => setConfirmDeleteCategoria(cat)}
+                        title="Excluir categoria"
+                        style={{
+                          background: '#fef0f0', border: '1px solid #f8d0d0',
+                          borderRadius: '0.5rem', width: 34, height: 34,
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          cursor: 'pointer', color: '#c62828', transition: 'all 0.2s',
+                        }}
+                      >
+                        <Trash2 size={15} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Filtros */}
       {!isCarregando && (
