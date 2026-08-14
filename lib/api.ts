@@ -311,6 +311,33 @@ export const api = {
     return apiFetch(url, { cache: 'no-store' }, token)
   },
 
+  // ── Categorias (Admin) ──
+  async getCategoriasAdmin() {
+    const token = getAdminToken()
+    return apiFetch('/admin/categorias/', {}, token)
+  },
+
+  async criarCategoria(dados: { id: string; nome: string; ordem: number; ativo: boolean }) {
+    const token = getAdminToken()
+    return apiFetch('/admin/categorias/', {
+      method: 'POST',
+      body: JSON.stringify(dados),
+    }, token)
+  },
+
+  async atualizarCategoria(id: string, dados: { nome: string; ordem: number; ativo: boolean }) {
+    const token = getAdminToken()
+    return apiFetch(`/admin/categorias/${id}/`, {
+      method: 'PUT',
+      body: JSON.stringify(dados),
+    }, token)
+  },
+
+  async excluirCategoria(id: string) {
+    const token = getAdminToken()
+    return apiFetch(`/admin/categorias/${id}/`, { method: 'DELETE' }, token)
+  },
+
   // ── Patrocinadores (Admin) ──
   async getPatrocinadoresAdmin() {
     const token = getAdminToken()

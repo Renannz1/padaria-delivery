@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { api } from '@/lib/api'
 import { useCardapioStore } from '@/store/cardapio-store'
 import { useToastStore } from '@/store/toast-store'
-import { Produto } from '@/types'
+import { Produto, Categoria } from '@/types'
 import {
   Plus,
   Pencil,
@@ -18,6 +18,10 @@ import {
   Upload,
   Search,
   Filter,
+  Tags,
+  ToggleLeft,
+  ToggleRight,
+  GripVertical,
 } from 'lucide-react'
 import { formatarMoeda } from '@/lib/utils'
 import { SelectFiltro } from '@/components/admin/SelectFiltro'
@@ -418,16 +422,191 @@ function ModalConfirmacaoExclusao({
   )
 }
 
+// ─────────────────────────────────────────
+// Modal de Categoria
+// ─────────────────────────────────────────
+
+const categoriaVazia = {
+  id: '',
+  nome: '',
+  ordem: 0,
+  ativo: true,
+}
+
+function ModalCategoria({
+  inicial,
+  onSalvar,
+  onFechar,
+}: {
+  inicial?: Partial<Categoria>
+  onSalvar: (dados: any) => void
+  onFechar: () => void
+}) {
+  const [form, setForm] = useState({ ...categoriaVazia, ...inicial })
+  const [erros, setErros] = useState<Record<string, string>>({})
+  const isEditing = Boolean(inicial?.id)
+
+  function validar() {
+    const e: Record<string, string> = {}
+    if (!isEditing && !form.id.trim()) e.id = 'O ID é obrigatório.'
+    if (!isEditing && !/^[a-z0-9-]+$/.test(form.id))
+      e.id = 'Use apenas letras minúsculas, números e hífens.'
+    if (!form.nome.trim()) e.nome = 'O nome é obrigatório.'
+    return e
+  }
+
+  function handleSubmit() {
+    const e = validar()
+    if (Object.keys(e).length > 0) { setErros(e); return }
+    onSalvar(form)
+  }
+
+  return (
+    <div
+      style={{
+        position: 'fixed', inset: 0, zIndex: 200,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: '1rem', background: 'rgba(28,18,8,0.65)',
+        animation: 'fade-in 0.2s ease',
+      }}
+      onClick={onFechar}
+    >
+      <div
+        style={{
+          background: 'white', borderRadius: '1.25rem',
+          width: '100%', maxWidth: 440,
+          animation: 'modal-content-show 0.25s ease',
+          border: '1px solid var(--borda)',
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--borda)' }}>
+          <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primario)' }}>
+            {isEditing ? 'Editar Categoria' : 'Nova Categoria'}
+          </h3>
+          <button
+            onClick={onFechar}
+            className="btn-fechar-hover"
+            style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-terciario)', borderRadius: '50%', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        {/* Form */}
+        <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+
+          {/* ID (slug) — só editável na criação */}
+          <div>
+            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secundario)', marginBottom: '0.375rem' }}>
+              ID da Categoria (slug) {isEditing && <span style={{ fontWeight: 400, color: 'var(--text-terciario)' }}>— não editável</span>}
+            </label>
+            <input
+              type="text"
+              value={form.id}
+              onChange={(e) => !isEditing && setForm((f) => ({ ...f, id: e.target.value.toLowerCase().replace(/\s+/g, '-') }))}
+              readOnly={isEditing}
+              placeholder="ex: paes-doces"
+              style={{
+                width: '100%', padding: '0.625rem 0.875rem', borderRadius: '0.625rem',
+                border: `1px solid ${erros.id ? '#f44336' : 'var(--borda)'}`,
+                background: isEditing ? 'var(--bg-principal)' : 'white',
+                fontSize: '0.9rem', color: 'var(--text-primario)',
+                outline: 'none', boxSizing: 'border-box',
+                cursor: isEditing ? 'not-allowed' : 'text',
+                opacity: isEditing ? 0.65 : 1,
+              }}
+            />
+            {erros.id && <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: '#f44336' }}>{erros.id}</p>}
+          </div>
+
+          {/* Nome */}
+          <div>
+            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secundario)', marginBottom: '0.375rem' }}>
+              Nome da Categoria *
+            </label>
+            <input
+              type="text"
+              value={form.nome}
+              onChange={(e) => setForm((f) => ({ ...f, nome: e.target.value }))}
+              placeholder="ex: Pães e Doces"
+              style={{
+                width: '100%', padding: '0.625rem 0.875rem', borderRadius: '0.625rem',
+                border: `1px solid ${erros.nome ? '#f44336' : 'var(--borda)'}`,
+                fontSize: '0.9rem', color: 'var(--text-primario)',
+                outline: 'none', boxSizing: 'border-box',
+              }}
+            />
+            {erros.nome && <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: '#f44336' }}>{erros.nome}</p>}
+          </div>
+
+          {/* Ordem + Ativo lado a lado */}
+          <div style={{ display: 'flex', gap: '1rem' }}>
+            <div style={{ flex: 1 }}>
+              <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secundario)', marginBottom: '0.375rem' }}>
+                Ordem
+              </label>
+              <input
+                type="number"
+                min={0}
+                value={form.ordem}
+                onChange={(e) => setForm((f) => ({ ...f, ordem: parseInt(e.target.value) || 0 }))}
+                style={{
+                  width: '100%', padding: '0.625rem 0.875rem', borderRadius: '0.625rem',
+                  border: '1px solid var(--borda)',
+                  fontSize: '0.9rem', color: 'var(--text-primario)',
+                  outline: 'none', boxSizing: 'border-box',
+                }}
+              />
+            </div>
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', paddingBottom: '0.625rem' }}>
+                <input
+                  type="checkbox"
+                  checked={form.ativo}
+                  onChange={(e) => setForm((f) => ({ ...f, ativo: e.target.checked }))}
+                  style={{ width: 16, height: 16, accentColor: 'var(--primaria)', cursor: 'pointer' }}
+                />
+                <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primario)' }}>Ativa</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Botões */}
+          <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.5rem' }}>
+            <button onClick={onFechar} className="btn-secundario" style={{ flex: 1 }}>Cancelar</button>
+            <button onClick={handleSubmit} className="btn-primario" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+              <Save size={16} />
+              {isEditing ? 'Salvar' : 'Criar Categoria'}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function CardapioPage() {
-  const { categorias, carregarCardapio, carregando: storeCarregando } = useCardapioStore()
+  const { categorias: categoriasStore, carregarCardapio, carregando: storeCarregando } = useCardapioStore()
   const [produtos, setProdutos] = useState<Produto[]>([])
+  const [categorias, setCategorias] = useState<Categoria[]>([])
   const [carregandoProdutos, setCarregandoProdutos] = useState(true)
+  const [carregandoCategorias, setCarregandoCategorias] = useState(true)
+
+  // Estado produtos
   const [modalAberto, setModalAberto] = useState(false)
   const [produtoEditando, setProdutoEditando] = useState<Produto | null>(null)
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null)
+
+  // Estado categorias
+  const [modalCategoriaAberto, setModalCategoriaAberto] = useState(false)
+  const [categoriaEditando, setCategoriaEditando] = useState<Categoria | null>(null)
+  const [confirmDeleteCategoria, setConfirmDeleteCategoria] = useState<Categoria | null>(null)
+
   const addToast = useToastStore((s) => s.addToast)
 
-  // Filtros
+  // Filtros de produto
   const [busca, setBusca] = useState('')
   const [filtroCategoria, setFiltroCategoria] = useState<string>('todas')
   const [filtroEsgotado, setFiltroEsgotado] = useState<string>('todos')
@@ -445,13 +624,25 @@ export default function CardapioPage() {
     }
   }, [])
 
+  const carregarCategorias = useCallback(async () => {
+    try {
+      const data = await api.getCategoriasAdmin()
+      setCategorias(data)
+    } catch (e) {
+      console.error('Erro ao carregar categorias:', e)
+    } finally {
+      setCarregandoCategorias(false)
+    }
+  }, [])
+
   useEffect(() => {
-    // Garante que as categorias também estão carregadas
-    if (categorias.length === 0 && !storeCarregando) {
+    carregarProdutos()
+    carregarCategorias()
+    // Também recarrega o store público para o seletor de categoria do produto funcionar
+    if (categoriasStore.length === 0 && !storeCarregando) {
       carregarCardapio()
     }
-    carregarProdutos()
-  }, [carregarProdutos, carregarCardapio])
+  }, [carregarProdutos, carregarCategorias, carregarCardapio])
 
   function abrirNovoProduto() {
     setProdutoEditando(null)
@@ -511,6 +702,70 @@ export default function CardapioPage() {
     }
   }
 
+  // ── Handlers de Categoria ──
+
+  function abrirNovaCategoria() {
+    setCategoriaEditando(null)
+    setModalCategoriaAberto(true)
+  }
+
+  function abrirEditarCategoria(c: Categoria) {
+    setCategoriaEditando(c)
+    setModalCategoriaAberto(true)
+  }
+
+  async function salvarCategoria(dados: any) {
+    if (categoriaEditando) {
+      try {
+        const { nome, ordem, ativo } = dados
+        const atualizada = await api.atualizarCategoria(categoriaEditando.id, { nome, ordem, ativo })
+        setCategorias((prev) => prev.map((c) => (c.id === categoriaEditando.id ? atualizada : c)))
+        addToast('Categoria atualizada com sucesso!', 'success')
+      } catch (e: any) {
+        addToast(e?.data?.detail || 'Erro ao atualizar categoria.', 'error')
+      }
+    } else {
+      try {
+        const nova = await api.criarCategoria(dados)
+        setCategorias((prev) => [...prev, nova].sort((a, b) => (a.ordem ?? 0) - (b.ordem ?? 0) || a.nome.localeCompare(b.nome)))
+        addToast('Categoria criada com sucesso!', 'success')
+      } catch (e: any) {
+        addToast(e?.data?.detail || 'Erro ao criar categoria.', 'error')
+      }
+    }
+    setModalCategoriaAberto(false)
+    setCategoriaEditando(null)
+    // Recarrega o store público
+    carregarCardapio()
+  }
+
+  async function handleRemoverCategoria(categoria: Categoria) {
+    try {
+      await api.excluirCategoria(categoria.id)
+      setCategorias((prev) => prev.filter((c) => c.id !== categoria.id))
+      addToast('Categoria removida com sucesso!', 'success')
+      carregarCardapio()
+    } catch (e: any) {
+      addToast(e?.data?.detail || 'Erro ao remover categoria.', 'error')
+    }
+    setConfirmDeleteCategoria(null)
+  }
+
+  async function handleToggleAtivoCategoria(categoria: Categoria) {
+    try {
+      const atualizada = await api.atualizarCategoria(categoria.id, {
+        nome: categoria.nome,
+        ordem: categoria.ordem ?? 0,
+        ativo: !categoria.ativo,
+      })
+      setCategorias((prev) => prev.map((c) => (c.id === categoria.id ? atualizada : c)))
+      addToast(`Categoria ${atualizada.ativo ? 'ativada' : 'desativada'}.`, 'success')
+      carregarCardapio()
+    } catch (e: any) {
+      addToast(e?.data?.detail || 'Erro ao atualizar categoria.', 'error')
+    }
+  }
+
   const isCarregando = carregandoProdutos || storeCarregando
 
   return (
@@ -544,6 +799,189 @@ export default function CardapioPage() {
             {isCarregando ? '\u00A0' : `${produtos.length} produtos · ${produtos.filter((p) => p.esgotado).length} esgotados`}
           </p>
         </div>
+      </div>
+
+      {/* ═══════════════════════════════════════
+          Seção de Categorias
+      ═══════════════════════════════════════ */}
+      <div
+        style={{
+          background: 'var(--bg-card)',
+          borderRadius: '1.25rem',
+          border: '1px solid var(--borda)',
+          marginBottom: '2rem',
+          overflow: 'hidden',
+          animation: 'fade-in 0.3s ease',
+        }}
+      >
+        {/* Header da seção */}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '1.125rem 1.5rem',
+            borderBottom: '1px solid var(--borda)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
+            <Tags size={18} color="var(--primaria)" />
+            <h2 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--text-primario)' }}>
+              Categorias
+            </h2>
+            <span
+              style={{
+                background: 'var(--bg-principal)',
+                border: '1px solid var(--borda)',
+                borderRadius: '999px',
+                padding: '0.1rem 0.6rem',
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                color: 'var(--text-secundario)',
+              }}
+            >
+              {categorias.length}
+            </span>
+          </div>
+          <button
+            id="btn-nova-categoria"
+            onClick={abrirNovaCategoria}
+            className="btn-primario"
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', padding: '0.5rem 1rem' }}
+          >
+            <Plus size={16} />
+            Nova Categoria
+          </button>
+        </div>
+
+        {/* Lista de Categorias */}
+        {carregandoCategorias ? (
+          <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-terciario)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem' }}>
+            <Loader2 size={20} className="animate-spin" />
+            <span>Carregando categorias...</span>
+          </div>
+        ) : categorias.length === 0 ? (
+          <div style={{ padding: '2.5rem 1.5rem', textAlign: 'center', color: 'var(--text-terciario)' }}>
+            <Tags size={36} style={{ margin: '0 auto 0.75rem', opacity: 0.3 }} />
+            <p style={{ margin: 0, fontWeight: 600, color: 'var(--text-primario)' }}>Nenhuma categoria cadastrada</p>
+            <p style={{ margin: '0.25rem 0 0', fontSize: '0.85rem' }}>Crie uma categoria para começar a organizar o cardápio.</p>
+          </div>
+        ) : (
+          <div>
+            {categorias.map((cat, idx) => (
+              <div
+                key={cat.id}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.875rem',
+                  padding: '0.75rem 1.5rem',
+                  borderTop: idx === 0 ? 'none' : '1px solid var(--borda)',
+                  opacity: cat.ativo ? 1 : 0.55,
+                  transition: 'opacity 0.2s, background 0.2s',
+                }}
+              >
+                {/* Ícone de ordenação (visual) */}
+                <GripVertical size={16} color="var(--text-terciario)" style={{ flexShrink: 0, cursor: 'grab' }} />
+
+                {/* Ordem */}
+                <span
+                  style={{
+                    minWidth: 28,
+                    height: 28,
+                    borderRadius: '0.5rem',
+                    background: 'var(--bg-principal)',
+                    border: '1px solid var(--borda)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    color: 'var(--text-secundario)',
+                    flexShrink: 0,
+                  }}
+                >
+                  {cat.ordem ?? 0}
+                </span>
+
+                {/* Nome e slug */}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ margin: 0, fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primario)' }}>
+                    {cat.nome}
+                  </p>
+                  <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--text-terciario)', fontFamily: 'monospace' }}>
+                    {cat.id}
+                  </p>
+                </div>
+
+                {/* Badge ativo/inativo */}
+                <span
+                  style={{
+                    padding: '0.2rem 0.6rem',
+                    borderRadius: '999px',
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    background: cat.ativo ? '#f0faf0' : '#fef0f0',
+                    color: cat.ativo ? '#2e7d32' : '#c62828',
+                    border: `1px solid ${cat.ativo ? '#b8ddb8' : '#f8d0d0'}`,
+                    flexShrink: 0,
+                  }}
+                >
+                  {cat.ativo ? 'Ativa' : 'Inativa'}
+                </span>
+
+                {/* Ações */}
+                <div style={{ display: 'flex', gap: '0.375rem', flexShrink: 0 }}>
+                  {/* Toggle ativo */}
+                  <button
+                    onClick={() => handleToggleAtivoCategoria(cat)}
+                    title={cat.ativo ? 'Desativar categoria' : 'Ativar categoria'}
+                    style={{
+                      background: cat.ativo ? '#f0f9f0' : '#fff4e5',
+                      border: `1px solid ${cat.ativo ? '#b8ddb8' : '#f0d0a0'}`,
+                      borderRadius: '0.5rem',
+                      width: 34, height: 34,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      cursor: 'pointer',
+                      color: cat.ativo ? '#2e7d32' : '#c05e00',
+                      transition: 'all 0.2s',
+                    }}
+                  >
+                    {cat.ativo ? <ToggleRight size={16} /> : <ToggleLeft size={16} />}
+                  </button>
+
+                  {/* Editar */}
+                  <button
+                    onClick={() => abrirEditarCategoria(cat)}
+                    title="Editar"
+                    style={{
+                      background: '#f0f0f8', border: '1px solid #e0e0ee',
+                      borderRadius: '0.5rem', width: 34, height: 34,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      cursor: 'pointer', color: '#555260', transition: 'all 0.2s',
+                    }}
+                  >
+                    <Pencil size={15} />
+                  </button>
+
+                  {/* Excluir */}
+                  <button
+                    onClick={() => setConfirmDeleteCategoria(cat)}
+                    title="Excluir categoria"
+                    style={{
+                      background: '#fef0f0', border: '1px solid #f8d0d0',
+                      borderRadius: '0.5rem', width: 34, height: 34,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      cursor: 'pointer', color: '#c62828', transition: 'all 0.2s',
+                    }}
+                  >
+                    <Trash2 size={15} />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Filtros */}
@@ -839,7 +1277,7 @@ export default function CardapioPage() {
         </>
       )}
 
-      {/* Modal novo/editar */}
+      {/* Modal novo/editar produto */}
       {modalAberto && (
         <ModalProduto
           inicial={produtoEditando ?? undefined}
@@ -852,7 +1290,7 @@ export default function CardapioPage() {
         />
       )}
 
-      {/* Modal excluir */}
+      {/* Modal excluir produto */}
       {confirmDelete && (
         <ModalConfirmacaoExclusao
           onConfirmar={() => {
@@ -860,6 +1298,26 @@ export default function CardapioPage() {
             setConfirmDelete(null)
           }}
           onCancelar={() => setConfirmDelete(null)}
+        />
+      )}
+
+      {/* Modal novo/editar categoria */}
+      {modalCategoriaAberto && (
+        <ModalCategoria
+          inicial={categoriaEditando ?? undefined}
+          onSalvar={salvarCategoria}
+          onFechar={() => {
+            setModalCategoriaAberto(false)
+            setCategoriaEditando(null)
+          }}
+        />
+      )}
+
+      {/* Modal excluir categoria */}
+      {confirmDeleteCategoria && (
+        <ModalConfirmacaoExclusao
+          onConfirmar={() => handleRemoverCategoria(confirmDeleteCategoria)}
+          onCancelar={() => setConfirmDeleteCategoria(null)}
         />
       )}
     </div>
