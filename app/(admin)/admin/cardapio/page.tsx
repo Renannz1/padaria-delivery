@@ -892,19 +892,6 @@ export default function CardapioPage() {
                 <h2 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--text-primario)' }}>
                   Categorias
                 </h2>
-                <span
-                  style={{
-                    background: 'var(--bg-principal)',
-                    border: '1px solid var(--borda)',
-                    borderRadius: '999px',
-                    padding: '0.1rem 0.6rem',
-                    fontSize: '0.75rem',
-                    fontWeight: 600,
-                    color: 'var(--text-secundario)',
-                  }}
-                >
-                  {categorias.length}
-                </span>
               </div>
               <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
                 <button
@@ -971,22 +958,6 @@ export default function CardapioPage() {
                         {cat.id}
                       </p>
                     </div>
-
-                    {/* Badge ativo/inativo */}
-                    <span
-                      style={{
-                        padding: '0.2rem 0.6rem',
-                        borderRadius: '999px',
-                        fontSize: '0.72rem',
-                        fontWeight: 700,
-                        background: cat.ativo ? '#f0faf0' : '#fef0f0',
-                        color: cat.ativo ? '#2e7d32' : '#c62828',
-                        border: `1px solid ${cat.ativo ? '#b8ddb8' : '#f8d0d0'}`,
-                        flexShrink: 0,
-                      }}
-                    >
-                      {cat.ativo ? 'Ativa' : 'Inativa'}
-                    </span>
 
                     {/* Ações */}
                     <div style={{ display: 'flex', gap: '0.375rem', flexShrink: 0 }}>
