@@ -448,9 +448,6 @@ function ModalCategoria({
 
   function validar() {
     const e: Record<string, string> = {}
-    if (!isEditing && !form.id.trim()) e.id = 'O ID é obrigatório.'
-    if (!isEditing && !/^[a-z0-9-]+$/.test(form.id))
-      e.id = 'Use apenas letras minúsculas, números e hífens.'
     if (!form.nome.trim()) e.nome = 'O nome é obrigatório.'
     return e
   }
@@ -497,30 +494,6 @@ function ModalCategoria({
         {/* Form */}
         <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
 
-          {/* ID (slug) — só editável na criação */}
-          <div>
-            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secundario)', marginBottom: '0.375rem' }}>
-              ID da Categoria (slug) {isEditing && <span style={{ fontWeight: 400, color: 'var(--text-terciario)' }}>— não editável</span>}
-            </label>
-            <input
-              type="text"
-              value={form.id}
-              onChange={(e) => !isEditing && setForm((f) => ({ ...f, id: e.target.value.toLowerCase().replace(/\s+/g, '-') }))}
-              readOnly={isEditing}
-              placeholder="ex: paes-doces"
-              style={{
-                width: '100%', padding: '0.625rem 0.875rem', borderRadius: '0.625rem',
-                border: `1px solid ${erros.id ? '#f44336' : 'var(--borda)'}`,
-                background: isEditing ? 'var(--bg-principal)' : 'white',
-                fontSize: '0.9rem', color: 'var(--text-primario)',
-                outline: 'none', boxSizing: 'border-box',
-                cursor: isEditing ? 'not-allowed' : 'text',
-                opacity: isEditing ? 0.65 : 1,
-              }}
-            />
-            {erros.id && <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: '#f44336' }}>{erros.id}</p>}
-          </div>
-
           {/* Nome */}
           <div>
             <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secundario)', marginBottom: '0.375rem' }}>
@@ -543,23 +516,25 @@ function ModalCategoria({
 
           {/* Ordem + Ativo lado a lado */}
           <div style={{ display: 'flex', gap: '1rem' }}>
-            <div style={{ flex: 1 }}>
-              <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secundario)', marginBottom: '0.375rem' }}>
-                Ordem
-              </label>
-              <input
-                type="number"
-                min={0}
-                value={form.ordem}
-                onChange={(e) => setForm((f) => ({ ...f, ordem: parseInt(e.target.value) || 0 }))}
-                style={{
-                  width: '100%', padding: '0.625rem 0.875rem', borderRadius: '0.625rem',
-                  border: '1px solid var(--borda)',
-                  fontSize: '0.9rem', color: 'var(--text-primario)',
-                  outline: 'none', boxSizing: 'border-box',
-                }}
-              />
-            </div>
+            {isEditing && (
+              <div style={{ flex: 1 }}>
+                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secundario)', marginBottom: '0.375rem' }}>
+                  Ordem
+                </label>
+                <input
+                  type="number"
+                  min={0}
+                  value={form.ordem}
+                  onChange={(e) => setForm((f) => ({ ...f, ordem: parseInt(e.target.value) || 0 }))}
+                  style={{
+                    width: '100%', padding: '0.625rem 0.875rem', borderRadius: '0.625rem',
+                    border: '1px solid var(--borda)',
+                    fontSize: '0.9rem', color: 'var(--text-primario)',
+                    outline: 'none', boxSizing: 'border-box',
+                  }}
+                />
+              </div>
+            )}
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', paddingBottom: '0.625rem' }}>
                 <input
@@ -604,6 +579,7 @@ export default function CardapioPage() {
   const [modalCategoriaAberto, setModalCategoriaAberto] = useState(false)
   const [categoriaEditando, setCategoriaEditando] = useState<Categoria | null>(null)
   const [confirmDeleteCategoria, setConfirmDeleteCategoria] = useState<Categoria | null>(null)
+  const [draggedCatId, setDraggedCatId] = useState<string | null>(null)
 
   const addToast = useToastStore((s) => s.addToast)
 
@@ -727,7 +703,27 @@ export default function CardapioPage() {
       }
     } else {
       try {
-        const nova = await api.criarCategoria(dados)
+        // Gerar slug automaticamente
+        let slug = dados.nome
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)/g, "")
+        
+        if (!slug) slug = `categoria-${Date.now()}`
+
+        // Calcular ordem baseada na última existente
+        const maxOrdem = categorias.length > 0 ? Math.max(...categorias.map(c => c.ordem ?? 0)) : 0
+        const novaOrdem = maxOrdem + 1
+
+        const payload = {
+          ...dados,
+          id: slug,
+          ordem: novaOrdem,
+        }
+
+        const nova = await api.criarCategoria(payload)
         setCategorias((prev) => [...prev, nova].sort((a, b) => (a.ordem ?? 0) - (b.ordem ?? 0) || a.nome.localeCompare(b.nome)))
         addToast('Categoria criada com sucesso!', 'success')
       } catch (e: any) {
@@ -765,6 +761,51 @@ export default function CardapioPage() {
     } catch (e: any) {
       addToast(e?.data?.detail || 'Erro ao atualizar categoria.', 'error')
     }
+  }
+
+  const handleDragStart = (e: React.DragEvent, id: string) => {
+    setDraggedCatId(id)
+    e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('text/plain', id)
+  }
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+  }
+
+  const handleDrop = async (e: React.DragEvent, targetId: string) => {
+    e.preventDefault()
+    if (!draggedCatId || draggedCatId === targetId) {
+      setDraggedCatId(null)
+      return
+    }
+
+    const draggedIndex = categorias.findIndex((c) => c.id === draggedCatId)
+    const targetIndex = categorias.findIndex((c) => c.id === targetId)
+    if (draggedIndex === -1 || targetIndex === -1) return
+
+    const novaLista = [...categorias]
+    const [draggedItem] = novaLista.splice(draggedIndex, 1)
+    novaLista.splice(targetIndex, 0, draggedItem)
+    setCategorias(novaLista)
+
+    const promessas = novaLista.map((c, index) => {
+      const novaOrdem = (index + 1) * 10
+      if (c.ordem !== novaOrdem) {
+        return api.atualizarCategoria(c.id, { nome: c.nome, ordem: novaOrdem, ativo: c.ativo ?? true })
+          .then(atualizada => { c.ordem = atualizada.ordem })
+      }
+      return Promise.resolve()
+    })
+
+    try {
+      await Promise.all(promessas)
+      carregarCardapio()
+    } catch (err) {
+      addToast('Erro ao atualizar ordem das categorias.', 'error')
+    }
+    setDraggedCatId(null)
   }
 
   const isCarregando = carregandoProdutos || storeCarregando
@@ -902,38 +943,24 @@ export default function CardapioPage() {
                 {categorias.map((cat, idx) => (
                   <div
                     key={cat.id}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, cat.id)}
+                    onDragOver={handleDragOver}
+                    onDrop={(e) => handleDrop(e, cat.id)}
+                    onDragEnd={() => setDraggedCatId(null)}
                     style={{
                       display: 'flex',
                       alignItems: 'center',
                       gap: '0.875rem',
                       padding: '0.75rem 1.5rem',
                       borderTop: idx === 0 ? 'none' : '1px solid var(--borda)',
-                      opacity: cat.ativo ? 1 : 0.55,
+                      opacity: draggedCatId === cat.id ? 0.3 : (cat.ativo ? 1 : 0.55),
                       transition: 'opacity 0.2s, background 0.2s',
+                      cursor: 'grab',
                     }}
                   >
-                    {/* Ícone de ordenação (visual) */}
-                    <GripVertical size={16} color="var(--text-terciario)" style={{ flexShrink: 0, cursor: 'grab' }} />
-
-                    {/* Ordem */}
-                    <span
-                      style={{
-                        minWidth: 28,
-                        height: 28,
-                        borderRadius: '0.5rem',
-                        background: 'var(--bg-principal)',
-                        border: '1px solid var(--borda)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '0.75rem',
-                        fontWeight: 700,
-                        color: 'var(--text-secundario)',
-                        flexShrink: 0,
-                      }}
-                    >
-                      {cat.ordem ?? 0}
-                    </span>
+                    {/* Ícone de ordenação */}
+                    <GripVertical size={16} color="var(--text-terciario)" style={{ flexShrink: 0 }} />
 
                     {/* Nome e slug */}
                     <div style={{ flex: 1, minWidth: 0 }}>
