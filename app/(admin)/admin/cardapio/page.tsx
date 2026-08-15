@@ -514,38 +514,17 @@ function ModalCategoria({
             {erros.nome && <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: '#f44336' }}>{erros.nome}</p>}
           </div>
 
-          {/* Ordem + Ativo lado a lado */}
-          <div style={{ display: 'flex', gap: '1rem' }}>
-            {isEditing && (
-              <div style={{ flex: 1 }}>
-                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secundario)', marginBottom: '0.375rem' }}>
-                  Ordem
-                </label>
-                <input
-                  type="number"
-                  min={0}
-                  value={form.ordem}
-                  onChange={(e) => setForm((f) => ({ ...f, ordem: parseInt(e.target.value) || 0 }))}
-                  style={{
-                    width: '100%', padding: '0.625rem 0.875rem', borderRadius: '0.625rem',
-                    border: '1px solid var(--borda)',
-                    fontSize: '0.9rem', color: 'var(--text-primario)',
-                    outline: 'none', boxSizing: 'border-box',
-                  }}
-                />
-              </div>
-            )}
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', paddingBottom: '0.625rem' }}>
-                <input
-                  type="checkbox"
-                  checked={form.ativo}
-                  onChange={(e) => setForm((f) => ({ ...f, ativo: e.target.checked }))}
-                  style={{ width: 16, height: 16, accentColor: 'var(--primaria)', cursor: 'pointer' }}
-                />
-                <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primario)' }}>Ativa</span>
-              </label>
-            </div>
+          {/* Ativo */}
+          <div>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', paddingBottom: '0.625rem' }}>
+              <input
+                type="checkbox"
+                checked={form.ativo}
+                onChange={(e) => setForm((f) => ({ ...f, ativo: e.target.checked }))}
+                style={{ width: 16, height: 16, accentColor: 'var(--primaria)', cursor: 'pointer' }}
+              />
+              <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primario)' }}>Ativa</span>
+            </label>
           </div>
 
           {/* Botões */}
