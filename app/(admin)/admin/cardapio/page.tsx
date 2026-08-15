@@ -692,14 +692,10 @@ export default function CardapioPage() {
         
         if (!slug) slug = `categoria-${Date.now()}`
 
-        // Calcular ordem baseada na última existente
-        const maxOrdem = categorias.length > 0 ? Math.max(...categorias.map(c => c.ordem ?? 0)) : 0
-        const novaOrdem = maxOrdem + 1
-
         const payload = {
           ...dados,
           id: slug,
-          ordem: novaOrdem,
+          ordem: 0, // O backend cuidará de calcular max(ordem) + 10
         }
 
         const nova = await api.criarCategoria(payload)
