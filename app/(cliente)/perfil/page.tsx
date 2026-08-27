@@ -54,7 +54,7 @@ export default function PerfilPage() {
     const errs: Record<string, string> = {}
     if (!nome.trim()) errs.nome = 'Informe seu nome completo'
     if (whatsapp.replace(/\D/g, '').length < 10) errs.whatsapp = 'WhatsApp inválido'
-    if (cpf.replace(/\D/g, '').length !== 11 && cpf.trim() !== '') {
+    if (!cpf.includes('*') && cpf.replace(/\D/g, '').length !== 11 && cpf.trim() !== '') {
       errs.cpf = 'CPF inválido (11 dígitos)'
     }
 
@@ -68,10 +68,12 @@ export default function PerfilPage() {
 
     try {
       if (estaLogado) {
-        const dados = {
+        const dados: any = {
           nome: nome.trim(),
           whatsapp: whatsapp.replace(/\D/g, ''),
-          cpf: cpf.replace(/\D/g, '')
+        }
+        if (!cpf.includes('*') && cpf.replace(/\D/g, '').length === 11) {
+          dados.cpf = cpf.replace(/\D/g, '')
         }
         await api.atualizarPerfilCliente(dados)
 

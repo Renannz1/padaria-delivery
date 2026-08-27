@@ -20,6 +20,8 @@ export function formatarWhatsapp(valor: string): string {
 }
 
 export function formatarCpf(valor: string): string {
+  if (!valor) return ''
+  if (valor.includes('*')) return valor
   const numeros = valor.replace(/\D/g, '')
   if (numeros.length <= 11) {
     return numeros
