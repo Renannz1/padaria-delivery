@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useCartStore } from '@/store/cart-store'
 import { useAuthStore } from '@/store/auth-store'
 import { useConfigStore } from '@/store/config-store'
-import { formatarMoeda, formatarWhatsapp, formatarCpf } from '@/lib/utils'
+import { formatarMoeda, formatarWhatsapp } from '@/lib/utils'
 import { DadosCliente, TipoEntrega, FormaPagamento } from '@/types'
 import {
   Truck, Store, ChevronRight, ArrowLeft, ShoppingBag,

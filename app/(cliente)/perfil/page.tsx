@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useCartStore } from '@/store/cart-store'
-import { formatarWhatsapp, formatarCpf } from '@/lib/utils'
+import { formatarWhatsapp } from '@/lib/utils'
 import { DadosCliente } from '@/types'
 import { Save, CheckCircle, AlertCircle } from 'lucide-react'
 import VoltarLink from '@/components/cliente/VoltarLink'
@@ -18,11 +18,9 @@ export default function PerfilPage() {
 
   const [nome, setNome] = useState('')
   const [whatsapp, setWhatsapp] = useState('')
-  const [cpf, setCpf] = useState('')
   const [erros, setErros] = useState<Record<string, string>>({})
   const [mostrarToast, setMostrarToast] = useState(false)
   const [estaMontado, setEstaMontado] = useState(false)
-  // Lê o valor booleano uma vez — evita recriar o efeito a cada render
   const estaLogado = useAuthStore((s) => s.isLogado())
 
   // Carrega os dados do perfil na montagem do componente
@@ -40,23 +38,18 @@ export default function PerfilPage() {
         const perfil = await api.getPerfilCliente()
         setNome(perfil.nome || '')
         setWhatsapp(formatarWhatsapp(perfil.whatsapp || ''))
-        setCpf(formatarCpf(perfil.cpf || ''))
       } catch (e) {
         console.error('Erro ao carregar dados do perfil:', e)
       }
     }
 
     fetchData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [estaLogado, router])
 
   function validar(): boolean {
     const errs: Record<string, string> = {}
     if (!nome.trim()) errs.nome = 'Informe seu nome completo'
     if (whatsapp.replace(/\D/g, '').length < 10) errs.whatsapp = 'WhatsApp inválido'
-    if (!cpf.includes('*') && cpf.replace(/\D/g, '').length !== 11 && cpf.trim() !== '') {
-      errs.cpf = 'CPF inválido (11 dígitos)'
-    }
 
     setErros(errs)
     return Object.keys(errs).length === 0
@@ -68,12 +61,9 @@ export default function PerfilPage() {
 
     try {
       if (estaLogado) {
-        const dados: any = {
+        const dados = {
           nome: nome.trim(),
           whatsapp: whatsapp.replace(/\D/g, ''),
-        }
-        if (!cpf.includes('*') && cpf.replace(/\D/g, '').length === 11) {
-          dados.cpf = cpf.replace(/\D/g, '')
         }
         await api.atualizarPerfilCliente(dados)
 
@@ -200,26 +190,6 @@ export default function PerfilPage() {
                   </p>
                 )}
               </div>
-
-              <div>
-                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.85rem', color: 'var(--text-secundario)', marginBottom: '0.5rem' }}>
-                  CPF (opcional)
-                </label>
-                <input
-                  id="perfil-cpf"
-                  type="text"
-                  value={cpf}
-                  onChange={(e) => setCpf(formatarCpf(e.target.value))}
-                  placeholder="000.000.000-00"
-                  className="input-campo"
-                  style={{ borderColor: erros.cpf ? 'var(--color-vermelho-erro)' : undefined, background: 'var(--bg-card)' }}
-                />
-                {erros.cpf && (
-                  <p style={{ color: 'var(--color-vermelho-erro)', fontSize: '0.75rem', marginTop: '0.375rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                    <AlertCircle size={12} /> {erros.cpf}
-                  </p>
-                )}
-              </div>
             </div>
           </section>
 
@@ -245,3 +215,4 @@ export default function PerfilPage() {
     </div>
   )
 }
+

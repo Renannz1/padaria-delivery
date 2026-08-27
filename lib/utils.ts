@@ -19,19 +19,4 @@ export function formatarWhatsapp(valor: string): string {
     .replace(/(\d{5})(\d)/, '$1-$2')
 }
 
-export function formatarCpf(valor: string): string {
-  if (!valor) return ''
-  if (valor.includes('*')) return valor
-  const numeros = valor.replace(/\D/g, '')
-  if (numeros.length <= 11) {
-    return numeros
-      .replace(/(\d{3})(\d)/, '$1.$2')
-      .replace(/(\d{3})(\d)/, '$1.$2')
-      .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
-  }
-  return numeros.slice(0, 11)
-      .replace(/(\d{3})(\d)/, '$1.$2')
-      .replace(/(\d{3})(\d)/, '$1.$2')
-      .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
-}
 

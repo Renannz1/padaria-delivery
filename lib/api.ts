@@ -186,13 +186,33 @@ export const api = {
   },
 
   // ============================================================
-  // AUTH DO CLIENTE
+  // AUTH DO CLIENTE (OTP WhatsApp & Login Eterno)
   // ============================================================
+
+  async solicitarOtp(telefone: string) {
+    return apiFetch('/auth/cliente/request-otp/', {
+      method: 'POST',
+      body: JSON.stringify({ telefone }),
+    })
+  },
+
+  async verificarOtp(telefone: string, codigo: string) {
+    return apiFetch('/auth/cliente/verify-otp/', {
+      method: 'POST',
+      body: JSON.stringify({ telefone, codigo }),
+    })
+  },
+
+  async completarCadastro(telefone: string, nome: string) {
+    return apiFetch('/auth/cliente/complete-registration/', {
+      method: 'POST',
+      body: JSON.stringify({ telefone, nome }),
+    })
+  },
 
   async cadastrarCliente(dados: {
     nome: string
     whatsapp: string
-    cpf: string
   }) {
     return apiFetch('/auth/cliente/cadastro/', {
       method: 'POST',
@@ -200,10 +220,10 @@ export const api = {
     })
   },
 
-  async loginCliente(whatsapp: string, cpf: string) {
+  async loginCliente(whatsapp: string) {
     return apiFetch('/auth/cliente/login/', {
       method: 'POST',
-      body: JSON.stringify({ whatsapp, cpf }),
+      body: JSON.stringify({ whatsapp }),
     })
   },
 
@@ -221,7 +241,7 @@ export const api = {
     return apiFetch('/auth/cliente/perfil/', {}, token)
   },
 
-  async atualizarPerfilCliente(dados: { nome: string; whatsapp: string; cpf: string }) {
+  async atualizarPerfilCliente(dados: { nome: string; whatsapp: string }) {
     const token = getClienteToken()
     return apiFetch(
       '/auth/cliente/perfil/',
@@ -507,7 +527,6 @@ export const api = {
       id: c.id,
       nome: c.nome,
       whatsapp: c.whatsapp,
-      cpf: c.cpf,
       totalPedidos: c.total_pedidos,
       totalGasto: parseFloat(c.total_gasto || '0'),
       ultimoPedido: c.ultimo_pedido,
