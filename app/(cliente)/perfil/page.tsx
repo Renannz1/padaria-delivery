@@ -96,18 +96,18 @@ export default function PerfilPage() {
   const cardStyle = {
     background: 'var(--bg-card)',
     borderRadius: '1rem',
-    padding: '1.5rem',
+    padding: '1.25rem',
     border: '1px solid var(--borda)',
   }
 
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%' }}>
-      <div style={{ margin: '0 auto', padding: '2.5rem 1rem 4rem', maxWidth: 768, position: 'relative', animation: 'fade-in 0.3s ease' }}>
+      <div style={{ margin: '0 auto', padding: '1.25rem 1rem 7rem', maxWidth: 768, position: 'relative', animation: 'fade-in 0.3s ease' }}>
 
         {/* Toast de Confirmação */}
         {mostrarToast && (
           <div className="toast-cliente">
-            <CheckCircle size={20} />
+            <CheckCircle size={18} />
             <span>Perfil atualizado com sucesso!</span>
           </div>
         )}
@@ -116,43 +116,43 @@ export default function PerfilPage() {
 
         <h1
           style={{
-            fontSize: '2rem',
+            fontSize: '1.35rem',
             fontWeight: 700,
             color: 'var(--text-primario)',
-            margin: '0 0 0.5rem',
+            margin: '0 0 0.25rem',
           }}
         >
           Minha Conta
         </h1>
-        <p style={{ color: 'var(--text-secundario)', fontSize: '1.0rem', marginBottom: '2rem' }}>
+        <p style={{ color: 'var(--text-secundario)', fontSize: '0.85rem', marginBottom: '1.25rem' }}>
           Gerencie suas informações pessoais.
         </p>
 
         {erros.form && (
-          <div style={{ padding: '1rem', background: '#ffebee', color: 'var(--color-vermelho-erro)', borderRadius: '8px', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <AlertCircle size={20} />
+          <div style={{ padding: '0.75rem 1rem', background: '#ffebee', color: 'var(--color-vermelho-erro)', borderRadius: '8px', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem' }}>
+            <AlertCircle size={18} />
             {erros.form}
           </div>
         )}
 
-        <form onSubmit={lidarComSalvar} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        <form onSubmit={lidarComSalvar} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
 
           {/* ─── DADOS PESSOAIS ─── */}
           <section style={cardStyle}>
             <h2
               style={{
-                fontSize: '1.25rem',
+                fontSize: '1.05rem',
                 fontWeight: 700,
                 color: 'var(--text-primario)',
-                margin: '0 0 1.25rem',
+                margin: '0 0 1rem',
               }}
             >
               Seus Dados
             </h2>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
               <div>
-                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.85rem', color: 'var(--text-secundario)', marginBottom: '0.5rem' }}>
+                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.8rem', color: 'var(--text-secundario)', marginBottom: '0.375rem' }}>
                   Nome completo *
                 </label>
                 <input
@@ -165,14 +165,14 @@ export default function PerfilPage() {
                   style={{ borderColor: erros.nome ? 'var(--color-vermelho-erro)' : undefined, background: 'var(--bg-card)' }}
                 />
                 {erros.nome && (
-                  <p style={{ color: 'var(--color-vermelho-erro)', fontSize: '0.75rem', marginTop: '0.375rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                  <p style={{ color: 'var(--color-vermelho-erro)', fontSize: '0.75rem', marginTop: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                     <AlertCircle size={12} /> {erros.nome}
                   </p>
                 )}
               </div>
 
               <div>
-                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.85rem', color: 'var(--text-secundario)', marginBottom: '0.5rem' }}>
+                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.8rem', color: 'var(--text-secundario)', marginBottom: '0.375rem' }}>
                   WhatsApp *
                 </label>
                 <input
@@ -185,7 +185,7 @@ export default function PerfilPage() {
                   style={{ borderColor: erros.whatsapp ? 'var(--color-vermelho-erro)' : undefined, background: 'var(--bg-principal)', color: 'var(--text-terciario)', cursor: 'not-allowed' }}
                 />
                 {erros.whatsapp && (
-                  <p style={{ color: 'var(--color-vermelho-erro)', fontSize: '0.75rem', marginTop: '0.375rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                  <p style={{ color: 'var(--color-vermelho-erro)', fontSize: '0.75rem', marginTop: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                     <AlertCircle size={12} /> {erros.whatsapp}
                   </p>
                 )}
@@ -199,16 +199,16 @@ export default function PerfilPage() {
             className="btn-primario"
             style={{
               width: '100%',
-              fontSize: '1.1rem',
-              padding: '1rem',
-              marginTop: '1rem',
+              fontSize: '0.95rem',
+              padding: '0.875rem 1rem',
+              marginTop: '0.5rem',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
               gap: '0.5rem',
             }}
           >
-            <Save size={20} /> Salvar Alterações
+            <Save size={18} /> Salvar Alterações
           </button>
         </form>
       </div>

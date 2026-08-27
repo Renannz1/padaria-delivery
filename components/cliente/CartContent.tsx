@@ -16,33 +16,33 @@ function CartItem({ item }: { item: ItemCarrinho }) {
     <div
       style={{
         display: 'flex',
-        gap: '1rem',
-        padding: '1.25rem 0',
+        gap: '0.75rem',
+        padding: '0.875rem 0',
         borderBottom: '1px solid #ebebef',
         alignItems: 'center',
         animation: 'fade-in 0.3s ease',
       }}
     >
       {/* Imagem do Produto */}
-      <div style={{ width: 64, height: 64, borderRadius: '12px', overflow: 'hidden', flexShrink: 0, background: '#f1f1f4' }}>
+      <div style={{ width: 48, height: 48, borderRadius: '8px', overflow: 'hidden', flexShrink: 0, background: '#f1f1f4' }}>
         {item.produto.imagem ? (
           <img src={item.produto.imagem} alt={item.produto.nome} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         ) : (
           <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#c0bdc8' }}>
-            <ShoppingCart size={24} />
+            <ShoppingCart size={20} />
           </div>
         )}
       </div>
 
       {/* Detalhes */}
-      <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+      <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
         
         {/* Nome e Preço */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.5rem' }}>
-          <p style={{ fontWeight: 600, fontSize: '0.95rem', color: '#18171a', margin: 0, lineHeight: 1.2 }}>
+          <p style={{ fontWeight: 600, fontSize: '0.875rem', color: '#18171a', margin: 0, lineHeight: 1.25 }}>
             {item.produto.nome}
           </p>
-          <span style={{ fontWeight: 700, color: '#18171a', fontSize: '1rem' }}>
+          <span style={{ fontWeight: 700, color: '#18171a', fontSize: '0.9rem', flexShrink: 0 }}>
             {formatarMoeda(item.produto.preco * item.quantidade)}
           </span>
         </div>
@@ -50,29 +50,29 @@ function CartItem({ item }: { item: ItemCarrinho }) {
         {/* Controles e preço unitário */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           
-          <p style={{ fontSize: '0.8rem', color: '#888597', margin: 0 }}>
+          <p style={{ fontSize: '0.75rem', color: '#888597', margin: 0 }}>
              {item.quantidade > 1 ? `${formatarMoeda(item.produto.preco)} cada` : ''}
           </p>
 
-          <div style={{ display: 'flex', alignItems: 'center', background: '#f7f7f8', borderRadius: '8px', border: '1px solid #ebebef' }}>
+          <div style={{ display: 'flex', alignItems: 'center', background: '#f7f7f8', borderRadius: '6px', border: '1px solid #ebebef' }}>
             <button
               onClick={() => diminuirQuantidade(item.produto.id)}
-              style={{ width: '32px', height: '32px', border: 'none', background: 'transparent', cursor: 'pointer', color: item.quantidade === 1 ? '#ef4444' : '#555260', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              style={{ width: '28px', height: '28px', border: 'none', background: 'transparent', cursor: 'pointer', color: item.quantidade === 1 ? '#ef4444' : '#555260', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               aria-label={item.quantidade === 1 ? "Remover item" : "Diminuir quantidade"}
             >
-              {item.quantidade === 1 ? <Trash2 size={16} /> : <span style={{ fontSize: '1.2rem', fontWeight: 600, marginTop: '-2px' }}>−</span>}
+              {item.quantidade === 1 ? <Trash2 size={13} /> : <span style={{ fontSize: '1.1rem', fontWeight: 600, marginTop: '-2px' }}>−</span>}
             </button>
             
-            <span style={{ fontWeight: 700, fontSize: '0.9rem', width: '24px', textAlign: 'center', color: '#18171a' }}>
+            <span style={{ fontWeight: 700, fontSize: '0.85rem', width: '20px', textAlign: 'center', color: '#18171a' }}>
               {item.quantidade}
             </span>
             
             <button
               onClick={() => adicionarItem(item.produto)}
-              style={{ width: '32px', height: '32px', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--primaria)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              style={{ width: '28px', height: '28px', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--primaria)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               aria-label="Aumentar quantidade"
             >
-              <span style={{ fontSize: '1.2rem', fontWeight: 600, marginTop: '-2px' }}>+</span>
+              <span style={{ fontSize: '1.1rem', fontWeight: 600, marginTop: '-2px' }}>+</span>
             </button>
           </div>
           
@@ -117,16 +117,16 @@ export default function CartContent({ onClose, isSidebar = false, isPeek = false
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0.5rem 1.25rem',
+          padding: '0.625rem 1.25rem',
           borderBottom: '1px solid #e4e2ea',
           background: 'white',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <ShoppingCart size={20} color="#18171a" />
+          <ShoppingCart size={18} color="#18171a" />
           <h2
             style={{
-              fontSize: '1.1rem',
+              fontSize: '1rem',
               fontWeight: 700,
               color: '#18171a',
               margin: 0,
@@ -136,7 +136,7 @@ export default function CartContent({ onClose, isSidebar = false, isPeek = false
           </h2>
         </div>
         {isPeek ? (
-          <span style={{ fontWeight: 700, fontSize: '1.1rem', color: '#18171a' }}>
+          <span style={{ fontWeight: 700, fontSize: '1rem', color: '#18171a' }}>
             {formatarMoeda(total)}
           </span>
         ) : onClose && (
@@ -146,8 +146,8 @@ export default function CartContent({ onClose, isSidebar = false, isPeek = false
               background: '#f1f1f4',
               border: 'none',
               borderRadius: '0.5rem',
-              width: 32,
-              height: 32,
+              width: 30,
+              height: 30,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -157,7 +157,7 @@ export default function CartContent({ onClose, isSidebar = false, isPeek = false
             }}
             aria-label="Fechar carrinho"
           >
-            <X size={18} />
+            <X size={16} />
           </button>
         )}
       </div>
@@ -182,20 +182,20 @@ export default function CartContent({ onClose, isSidebar = false, isPeek = false
               alignItems: 'center',
               justifyContent: 'center',
               height: '100%',
-              gap: '1rem',
+              gap: '0.75rem',
               color: '#888597',
-              padding: '2rem 0',
+              padding: '2.5rem 0',
             }}
           >
-            <div style={{ padding: '1.5rem', background: '#f7f7f8', borderRadius: '50%' }}>
-              <ShoppingCart size={40} color="#d4d2dc" />
+            <div style={{ padding: '0.875rem', background: '#f7f7f8', borderRadius: '50%', border: '1px solid #e4e2ea' }}>
+              <ShoppingCart size={24} color="#888597" />
             </div>
-            <p style={{ fontWeight: 600, fontSize: '1.1rem', margin: 0, color: '#555260' }}>Seu carrinho está vazio</p>
+            <p style={{ fontWeight: 600, fontSize: '0.95rem', margin: 0, color: '#555260' }}>Seu carrinho está vazio</p>
             {!isSidebar && (
               <button
                 onClick={onClose}
                 className="btn-secundario"
-                style={{ marginTop: '0.5rem' }}
+                style={{ marginTop: '0.25rem', fontSize: '0.85rem', padding: '0.5rem 1rem' }}
               >
                 Ver cardápio
               </button>
@@ -213,7 +213,7 @@ export default function CartContent({ onClose, isSidebar = false, isPeek = false
                 border: 'none',
                 cursor: 'pointer',
                 color: '#888597',
-                fontSize: '0.8rem',
+                fontSize: '0.75rem',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.25rem',
@@ -221,7 +221,7 @@ export default function CartContent({ onClose, isSidebar = false, isPeek = false
                 textDecoration: 'underline',
               }}
             >
-              <Trash2 size={13} /> Limpar carrinho
+              <Trash2 size={12} /> Limpar carrinho
             </button>
           </div>
         )}
@@ -231,7 +231,7 @@ export default function CartContent({ onClose, isSidebar = false, isPeek = false
       {itens.length > 0 && (
         <div
           style={{
-            padding: '1rem 1.25rem',
+            padding: '0.875rem 1.25rem',
             background: 'white',
             borderTop: '1px solid #e4e2ea',
             borderBottomLeftRadius: isSidebar ? '12px' : '0',
@@ -239,20 +239,20 @@ export default function CartContent({ onClose, isSidebar = false, isPeek = false
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            gap: '1rem'
+            gap: '0.75rem'
           }}
         >
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.4rem' }}>
-              <span style={{ fontSize: '1.1rem', color: '#555260', fontWeight: 600 }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.35rem' }}>
+              <span style={{ fontSize: '0.85rem', color: '#555260', fontWeight: 600 }}>
                 Total:
               </span>
-              <span style={{ fontWeight: 800, fontSize: '1.1rem', color: '#18171a' }}>
+              <span style={{ fontWeight: 800, fontSize: '1.05rem', color: '#18171a' }}>
                 {formatarMoeda(total)}
               </span>
             </div>
             {abaixoMinimo && (
-              <span style={{ color: '#ef4444', fontSize: '0.75rem', fontWeight: 600, marginTop: '2px', lineHeight: 1.2 }}>
+              <span style={{ color: '#ef4444', fontSize: '0.7rem', fontWeight: 600, marginTop: '2px', lineHeight: 1.2 }}>
                 Faltam {formatarMoeda(faltam)}<br />para o mínimo
               </span>
             )}
@@ -277,19 +277,19 @@ export default function CartContent({ onClose, isSidebar = false, isPeek = false
                 <button
                   className="btn-primario"
                   style={{ 
-                    padding: '0.6rem 1.2rem', 
+                    padding: '0.55rem 1.1rem', 
                     display: 'flex', 
                     justifyContent: 'center', 
                     alignItems: 'center', 
-                    gap: '0.4rem', 
-                    fontSize: '0.9rem', 
+                    gap: '0.35rem', 
+                    fontSize: '0.875rem', 
                     borderRadius: '0.5rem',
                     opacity: abaixoMinimo ? 0.5 : 1,
                     pointerEvents: abaixoMinimo ? 'none' : 'auto'
                   }}
                   disabled={abaixoMinimo}
                 >
-                  Continuar <ArrowRight size={16} />
+                  Continuar <ArrowRight size={15} />
                 </button>
               </Link>
             </div>

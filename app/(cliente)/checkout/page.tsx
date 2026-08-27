@@ -147,25 +147,28 @@ export default function CheckoutPage() {
   if (!config.estaAberto()) {
     return (
       <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%' }}>
-        <div style={{ margin: '0 auto', padding: '2.5rem 1rem 4rem', maxWidth: 768, animation: 'fade-in 0.3s ease' }}>
+        <div style={{ margin: '0 auto', padding: '1.25rem 1rem 7rem', maxWidth: 768, animation: 'fade-in 0.3s ease' }}>
           <VoltarLink />
-          <h1 style={{ fontSize: '2rem', fontWeight: 700, color: '#1c1208', margin: '0 0 0.5rem' }}>
+          <h1 style={{ fontSize: '1.35rem', fontWeight: 700, color: '#1c1208', margin: '0 0 0.25rem' }}>
             Estamos Fechados
           </h1>
+          <p style={{ color: '#888597', fontSize: '0.85rem', marginBottom: '1.25rem' }}>
+            Aguardamos você no nosso próximo horário de funcionamento
+          </p>
 
-          <div style={{ padding: '4rem 1.5rem', textAlign: 'center', maxWidth: 480, margin: '0 auto' }}>
-            <div style={{ padding: '1.5rem', background: 'white', borderRadius: '50%', display: 'inline-block', marginBottom: '1.5rem' }}>
-              <Store size={48} color="#d4d2dc" />
+          <div style={{ padding: '2.5rem 1rem', textAlign: 'center', maxWidth: 420, margin: '0 auto' }}>
+            <div style={{ padding: '0.875rem', background: 'white', borderRadius: '50%', display: 'inline-block', marginBottom: '1rem', border: '1px solid var(--borda)' }}>
+              <Store size={28} color="#888597" />
             </div>
-            <h2 style={{ margin: '0 0 0.75rem', color: '#1c1208', fontSize: '1.75rem' }}>
+            <h2 style={{ margin: '0 0 0.5rem', color: '#1c1208', fontSize: '1.15rem', fontWeight: 700 }}>
               Não é possível fazer pedidos
             </h2>
-            <p style={{ color: '#888597', marginBottom: '2rem', fontSize: '1rem' }}>
+            <p style={{ color: '#888597', marginBottom: '1.25rem', fontSize: '0.85rem', lineHeight: 1.4 }}>
               O estabelecimento está fechado no momento.
             </p>
             <Link href="/" style={{ textDecoration: 'none' }}>
-              <button className="btn-primario" style={{ width: '100%', maxWidth: 300, margin: '0 auto', display: 'flex', justifyContent: 'center' }}>
-                Voltar ao Início <ChevronRight size={18} />
+              <button className="btn-primario" style={{ width: '100%', maxWidth: 260, margin: '0 auto', display: 'flex', justifyContent: 'center', fontSize: '0.9rem', padding: '0.75rem 1.25rem' }}>
+                Voltar ao Início <ChevronRight size={16} />
               </button>
             </Link>
           </div>
@@ -177,28 +180,31 @@ export default function CheckoutPage() {
   if ((itens.length === 0 || abaixoMinimo) && !isRedirecting) {
     return (
       <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%' }}>
-        <div style={{ margin: '0 auto', padding: '2.5rem 1rem 4rem', maxWidth: 768, animation: 'fade-in 0.3s ease' }}>
+        <div style={{ margin: '0 auto', padding: '1.25rem 1rem 7rem', maxWidth: 768, animation: 'fade-in 0.3s ease' }}>
           <VoltarLink />
-          <h1 style={{ fontSize: '2rem', fontWeight: 700, color: '#1c1208', margin: '0 0 0.5rem' }}>
+          <h1 style={{ fontSize: '1.35rem', fontWeight: 700, color: '#1c1208', margin: '0 0 0.25rem' }}>
             Finalizar Pedido
           </h1>
+          <p style={{ color: '#888597', fontSize: '0.85rem', marginBottom: '1.25rem' }}>
+            Revise seus itens antes de prosseguir
+          </p>
 
-          <div style={{ padding: '4rem 1.5rem', textAlign: 'center', maxWidth: 480, margin: '0 auto' }}>
-            <div style={{ padding: '1.5rem', background: 'white', borderRadius: '50%', display: 'inline-block', marginBottom: '1.5rem' }}>
-              <ShoppingBag size={48} color="#d4d2dc" />
+          <div style={{ padding: '2.5rem 1rem', textAlign: 'center', maxWidth: 420, margin: '0 auto' }}>
+            <div style={{ padding: '0.875rem', background: 'white', borderRadius: '50%', display: 'inline-block', marginBottom: '1rem', border: '1px solid var(--borda)' }}>
+              <ShoppingBag size={28} color="#888597" />
             </div>
-            <h2 style={{ margin: '0 0 0.75rem', color: '#1c1208', fontSize: '1.75rem' }}>
+            <h2 style={{ margin: '0 0 0.5rem', color: '#1c1208', fontSize: '1.15rem', fontWeight: 700 }}>
               {abaixoMinimo ? 'Pedido mínimo não atingido' : 'Seu carrinho está vazio'}
             </h2>
-            <p style={{ color: '#888597', marginBottom: '2rem', fontSize: '1rem' }}>
+            <p style={{ color: '#888597', marginBottom: '1.25rem', fontSize: '0.85rem', lineHeight: 1.4 }}>
               {abaixoMinimo 
                 ? `Para finalizar a compra, adicione mais ${formatarMoeda(faltam)} em produtos.` 
                 : 'Parece que você ainda não escolheu suas delícias. Adicione produtos antes de finalizar o pedido.'
               }
             </p>
             <Link href="/" style={{ textDecoration: 'none' }}>
-              <button className="btn-primario" style={{ width: '100%', maxWidth: 300, margin: '0 auto' }}>
-                Explorar Cardápio <ChevronRight size={18} />
+              <button className="btn-primario" style={{ width: '100%', maxWidth: 260, margin: '0 auto', fontSize: '0.9rem', padding: '0.75rem 1.25rem' }}>
+                Explorar Cardápio <ChevronRight size={16} />
               </button>
             </Link>
           </div>
@@ -210,26 +216,26 @@ export default function CheckoutPage() {
   if (!isLogado) {
     return (
       <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%' }}>
-        <div style={{ margin: '0 auto', padding: '2.5rem 1rem 4rem', maxWidth: 768, animation: 'fade-in 0.3s ease' }}>
+        <div style={{ margin: '0 auto', padding: '1.25rem 1rem 7rem', maxWidth: 768, animation: 'fade-in 0.3s ease' }}>
           <VoltarLink />
-          <h1 style={{ fontSize: '2rem', fontWeight: 700, color: '#1c1208', margin: '0 0 0.5rem' }}>
+          <h1 style={{ fontSize: '1.35rem', fontWeight: 700, color: '#1c1208', margin: '0 0 0.25rem' }}>
             Finalizar Pedido
           </h1>
-          <p style={{ color: '#888597', fontSize: '1rem', marginBottom: '2rem' }}>
+          <p style={{ color: '#888597', fontSize: '0.85rem', marginBottom: '1.25rem' }}>
             {totalItens} {totalItens === 1 ? 'item' : 'itens'} no seu carrinho
           </p>
 
-          <div style={{ padding: '3rem 1.5rem', textAlign: 'center', background: 'white', borderRadius: '1rem', border: '1px solid var(--borda)' }}>
-            <h2 style={{ margin: '0 0 0.75rem', color: '#1c1208', fontSize: '1.5rem' }}>
+          <div style={{ padding: '2rem 1.25rem', textAlign: 'center', background: 'white', borderRadius: '1rem', border: '1px solid var(--borda)', maxWidth: 460, margin: '0 auto' }}>
+            <h2 style={{ margin: '0 0 0.5rem', color: '#1c1208', fontSize: '1.15rem', fontWeight: 700 }}>
               Identifique-se para continuar
             </h2>
-            <p style={{ color: '#888597', marginBottom: '2rem' }}>
+            <p style={{ color: '#888597', marginBottom: '1.25rem', fontSize: '0.85rem', lineHeight: 1.4 }}>
               Precisamos saber quem você é para entregar seu pedido direitinho.
             </p>
             <button 
               className="btn-primario" 
               onClick={() => setShowAuthModal(true)}
-              style={{ width: '100%', maxWidth: 300, margin: '0 auto', display: 'flex', justifyContent: 'center' }}
+              style={{ width: '100%', maxWidth: 260, margin: '0 auto', display: 'flex', justifyContent: 'center', fontSize: '0.9rem', padding: '0.75rem 1.25rem' }}
             >
               Fazer Login ou Criar Conta
             </button>
@@ -249,28 +255,28 @@ export default function CheckoutPage() {
   const cardStyle = {
     background: 'white',
     borderRadius: '1rem',
-    padding: '1.5rem',
+    padding: '1.25rem',
     border: '1px solid var(--borda)',
   }
 
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%' }}>
-      <div style={{ margin: '0 auto', padding: '2.5rem 1rem 4rem', maxWidth: 768, animation: 'fade-in 0.3s ease' }}>
+      <div style={{ margin: '0 auto', padding: '1.25rem 1rem 7rem', maxWidth: 768, animation: 'fade-in 0.3s ease' }}>
         {etapa === 2 ? (
           <button
             onClick={() => setEtapa(1)}
-            style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#888597', background: 'none', border: 'none', cursor: 'pointer', padding: 0, marginBottom: '1.5rem', fontWeight: 600, fontSize: '0.9rem' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#888597', background: 'none', border: 'none', cursor: 'pointer', padding: 0, marginBottom: '1rem', fontWeight: 600, fontSize: '0.85rem' }}
           >
-            <ArrowLeft size={16} /> Voltar para opções de entrega
+            <ArrowLeft size={15} /> Voltar para opções de entrega
           </button>
         ) : (
           <VoltarLink />
         )}
 
-        <h1 style={{ fontSize: '2rem', fontWeight: 700, color: '#1c1208', margin: '0 0 0.5rem' }}>
+        <h1 style={{ fontSize: '1.35rem', fontWeight: 700, color: '#1c1208', margin: '0 0 0.25rem' }}>
           Finalizar Pedido
         </h1>
-        <p style={{ color: '#888597', fontSize: '1rem', marginBottom: '2rem' }}>
+        <p style={{ color: '#888597', fontSize: '0.85rem', marginBottom: '1.25rem' }}>
           {totalItens} {totalItens === 1 ? 'item' : 'itens'} no seu carrinho
         </p>
 
@@ -278,10 +284,10 @@ export default function CheckoutPage() {
           <div style={{
             background: '#f0faf0',
             border: '1px solid #b8ddb8',
-            borderRadius: '0.75rem',
-            padding: '0.75rem 1rem',
-            marginBottom: '1.5rem',
-            fontSize: '0.875rem',
+            borderRadius: '0.625rem',
+            padding: '0.625rem 0.875rem',
+            marginBottom: '1.25rem',
+            fontSize: '0.82rem',
             color: '#2e7d32',
             display: 'flex',
             alignItems: 'center',
@@ -295,43 +301,43 @@ export default function CheckoutPage() {
           <div style={{
             background: '#fef0f0',
             border: '1px solid #f8c0c0',
-            borderRadius: '0.75rem',
-            padding: '0.875rem 1rem',
-            marginBottom: '1.5rem',
-            fontSize: '0.875rem',
+            borderRadius: '0.625rem',
+            padding: '0.75rem 1rem',
+            marginBottom: '1.25rem',
+            fontSize: '0.82rem',
             color: '#c62828',
           }}>
             {erroApi || errors.geral}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
 
           {/* ─── TIPO DE ENTREGA ─── */}
           {etapa === 1 && (
             <>
               <section style={cardStyle}>
-                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1c1208', margin: '0 0 1.25rem' }}>
+                <h2 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#1c1208', margin: '0 0 1rem' }}>
                   Como deseja receber?
                 </h2>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                   {[
-                    { id: 'entrega' as TipoEntrega, label: 'Delivery', sub: 'Receba em casa', icon: <Truck size={24} /> },
-                    { id: 'retirada' as TipoEntrega, label: 'Retirar no local', sub: 'Busque no local', icon: <Store size={24} /> },
+                    { id: 'entrega' as TipoEntrega, label: 'Delivery', sub: 'Receba em casa', icon: <Truck size={20} /> },
+                    { id: 'retirada' as TipoEntrega, label: 'Retirar no local', sub: 'Busque no local', icon: <Store size={20} /> },
                   ].map((opt) => (
                     <button key={opt.id} type="button" id={`tipo-${opt.id}`}
                       onClick={() => setTipoEntrega(opt.id)}
                       style={{
-                        padding: '1.25rem 1rem', borderRadius: '0.75rem', border: '2px solid',
+                        padding: '1rem 0.75rem', borderRadius: '0.75rem', border: '2px solid',
                         borderColor: tipoEntrega === opt.id ? 'var(--primaria)' : '#f0e4d0',
                         background: tipoEntrega === opt.id ? 'rgba(200, 134, 10, 0.04)' : '#faf6f0',
                         cursor: 'pointer', transition: 'all 0.2s ease', textAlign: 'center',
-                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem',
+                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.375rem',
                       }}
                     >
                       <span style={{ color: tipoEntrega === opt.id ? 'var(--primaria)' : '#b89470' }}>{opt.icon}</span>
-                      <span style={{ fontWeight: 700, color: tipoEntrega === opt.id ? '#1c1208' : '#4a371c', fontSize: '0.95rem' }}>{opt.label}</span>
-                      <span style={{ fontSize: '0.75rem', color: '#888597' }}>{opt.sub}</span>
+                      <span style={{ fontWeight: 700, color: tipoEntrega === opt.id ? '#1c1208' : '#4a371c', fontSize: '0.875rem' }}>{opt.label}</span>
+                      <span style={{ fontSize: '0.7rem', color: '#888597' }}>{opt.sub}</span>
                     </button>
                   ))}
                 </div>
@@ -340,7 +346,7 @@ export default function CheckoutPage() {
               {/* ─── ENDEREÇO ─── */}
               {tipoEntrega === 'entrega' && isLogado && (
                 <section style={{ ...cardStyle, animation: 'fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1)' }}>
-                  <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1c1208', margin: '0 0 1.25rem' }}>
+                  <h2 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#1c1208', margin: '0 0 1rem' }}>
                     Endereço de Entrega
                   </h2>
                   <SeletorEndereco onSelect={setEnderecoSelecionado} />
@@ -353,9 +359,9 @@ export default function CheckoutPage() {
                   if (validar()) setEtapa(2)
                 }}
                 className="btn-primario"
-                style={{ width: '100%', fontSize: '1.1rem', padding: '1rem', marginTop: '1rem', marginBottom: '2rem', display: 'flex', justifyContent: 'center', gap: '0.5rem' }}
+                style={{ width: '100%', fontSize: '0.95rem', padding: '0.875rem 1rem', marginTop: '0.5rem', display: 'flex', justifyContent: 'center', gap: '0.4rem' }}
               >
-                Ir para o pagamento <ChevronRight size={22} />
+                Ir para o pagamento <ChevronRight size={18} />
               </button>
             </>
           )}
@@ -366,15 +372,15 @@ export default function CheckoutPage() {
 
           {/* ─── PAGAMENTO ─── */}
           <section style={cardStyle}>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1c1208', margin: '0 0 0.25rem' }}>
+            <h2 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#1c1208', margin: '0 0 0.2rem' }}>
               Pagamento
             </h2>
-            <p style={{ color: '#888597', fontSize: '0.85rem', margin: '0 0 1.25rem' }}>
+            <p style={{ color: '#888597', fontSize: '0.8rem', margin: '0 0 1rem' }}>
               {tipoEntrega === 'entrega' 
                 ? 'O pagamento será realizado no momento da entrega do pedido.' 
                 : 'O pagamento será realizado no balcão ao retirar o pedido.'}
             </p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', marginBottom: formaPagamento === 'dinheiro' ? '1.25rem' : 0 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem', marginBottom: formaPagamento === 'dinheiro' ? '1rem' : 0 }}>
               {FORMAS_PAGAMENTO.map((fp) => (
                 <button
                   key={fp.id}
@@ -382,7 +388,7 @@ export default function CheckoutPage() {
                   id={`pagamento-${fp.id}`}
                   onClick={() => setFormaPagamentoLocal(fp.id)}
                   style={{
-                    padding: '1rem 0.5rem',
+                    padding: '0.75rem 0.35rem',
                     borderRadius: '0.75rem',
                     border: '2px solid',
                     borderColor: formaPagamento === fp.id ? 'var(--primaria)' : '#f0e4d0',
@@ -392,19 +398,19 @@ export default function CheckoutPage() {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    gap: '0.5rem',
+                    gap: '0.375rem',
                   }}
                 >
                   <span style={{ color: formaPagamento === fp.id ? 'var(--primaria)' : '#b89470' }}>{fp.icon}</span>
-                  <span style={{ fontWeight: 700, fontSize: '0.85rem', color: formaPagamento === fp.id ? '#1c1208' : '#4a371c' }}>{fp.label}</span>
-                  <span style={{ fontSize: '0.68rem', color: '#888597', lineHeight: 1.2 }}>{fp.sub}</span>
+                  <span style={{ fontWeight: 700, fontSize: '0.8rem', color: formaPagamento === fp.id ? '#1c1208' : '#4a371c' }}>{fp.label}</span>
+                  <span style={{ fontSize: '0.65rem', color: '#888597', lineHeight: 1.2 }}>{fp.sub}</span>
                 </button>
               ))}
             </div>
 
             {formaPagamento === 'dinheiro' && (
               <div style={{ animation: 'fade-in 0.3s ease' }}>
-                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.85rem', color: '#555260', marginBottom: '0.5rem' }}>
+                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.8rem', color: '#555260', marginBottom: '0.375rem' }}>
                   Troco para quanto? (opcional)
                 </label>
                 <input
@@ -422,7 +428,7 @@ export default function CheckoutPage() {
 
           {/* ─── OBSERVAÇÕES ─── */}
           <section style={cardStyle}>
-            <label style={{ display: 'block', fontWeight: 600, fontSize: '0.95rem', color: '#1c1208', marginBottom: '0.75rem' }}>
+            <label style={{ display: 'block', fontWeight: 600, fontSize: '0.85rem', color: '#1c1208', marginBottom: '0.5rem' }}>
               Alguma observação? (opcional)
             </label>
             <textarea
@@ -437,18 +443,18 @@ export default function CheckoutPage() {
           </section>
 
           {/* ─── RESUMO ─── */}
-          <section style={{ background: '#faf6f0', borderRadius: '1rem', padding: '1.5rem', border: '1px solid #f0e4d0' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.95rem', color: '#555260' }}>
+          <section style={{ background: '#faf6f0', borderRadius: '1rem', padding: '1.125rem', border: '1px solid #f0e4d0' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', color: '#555260' }}>
                 <span>Subtotal</span><span>{formatarMoeda(subtotal)}</span>
               </div>
               {tipoEntrega === 'entrega' && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.95rem', color: '#555260' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', color: '#555260' }}>
                   <span>Taxa de entrega</span>
                   <span>{taxaEntrega === 0 ? <span style={{ color: '#2e7d32', fontWeight: 600 }}>Grátis</span> : formatarMoeda(taxaEntrega)}</span>
                 </div>
               )}
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, fontSize: '1.25rem', color: '#1c1208', borderTop: '1px solid #e8d5b0', paddingTop: '1rem', marginTop: '0.25rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, fontSize: '1.05rem', color: '#1c1208', borderTop: '1px solid #e8d5b0', paddingTop: '0.75rem', marginTop: '0.25rem' }}>
                 <span>Total</span>
                 <span style={{ color: 'var(--primaria)' }}>{formatarMoeda(total)}</span>
               </div>
@@ -459,12 +465,12 @@ export default function CheckoutPage() {
                 id="btn-proximo"
                 type="submit"
                 className="btn-primario"
-                style={{ width: '100%', fontSize: '1.1rem', padding: '1rem', marginTop: '1rem', marginBottom: '2rem', display: 'flex', justifyContent: 'center', gap: '0.5rem' }}
+                style={{ width: '100%', fontSize: '0.95rem', padding: '0.875rem 1rem', marginTop: '0.5rem', display: 'flex', justifyContent: 'center', gap: '0.4rem' }}
                 disabled={isCarregando}
               >
                 {isCarregando
-                  ? <><Loader2 size={20} className="animate-spin" /> Enviando...</>
-                  : <>Finalizar Pedido <ChevronRight size={22} /></>
+                  ? <><Loader2 size={18} className="animate-spin" /> Enviando...</>
+                  : <>Finalizar Pedido <ChevronRight size={18} /></>
                 }
               </button>
             </>

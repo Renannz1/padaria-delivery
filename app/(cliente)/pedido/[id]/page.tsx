@@ -99,12 +99,12 @@ export default function PedidoPage() {
 
   if (erro || !pedido) {
     return (
-      <div style={{ padding: '3rem 1.5rem', textAlign: 'center', maxWidth: 480, margin: '0 auto' }}>
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
-          <AlertCircle size={48} color="#c62828" />
+      <div style={{ padding: '2.5rem 1rem', textAlign: 'center', maxWidth: 420, margin: '0 auto' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.75rem' }}>
+          <AlertCircle size={28} color="#c62828" />
         </div>
-        <h2 style={{ color: '#1c1208', margin: '0 0 0.5rem' }}>Pedido não encontrado</h2>
-        <p style={{ color: '#888597' }}>{erro || 'Verifique o número do pedido e tente novamente.'}</p>
+        <h2 style={{ color: '#1c1208', margin: '0 0 0.5rem', fontSize: '1.15rem', fontWeight: 700 }}>Pedido não encontrado</h2>
+        <p style={{ color: '#888597', fontSize: '0.85rem', marginBottom: '1.25rem' }}>{erro || 'Verifique o número do pedido e tente novamente.'}</p>
         <VoltarLink />
       </div>
     )
@@ -126,7 +126,7 @@ export default function PedidoPage() {
   
   // Para evitar que ele use o ícone padrão de checkmark, forçamos o ícone de pacote
   if (isRetirada && statusAtual === 'retirada_pronta') {
-    info.icon = <Package size={24} />
+    info.icon = <Package size={18} />
   }
 
   const pedidoFinalizado = statusAtual === 'entregue' || statusAtual === 'retirada_pronta'
@@ -139,15 +139,15 @@ export default function PedidoPage() {
   const cardStyle = {
     background: 'white',
     borderRadius: '1rem',
-    padding: '1.5rem',
+    padding: '1.25rem',
     border: '1px solid var(--borda)',
-    marginBottom: '1.5rem',
+    marginBottom: '1rem',
   }
 
   const whatsappLoja = pedido.cliente?.whatsapp?.replace(/\D/g, '') ?? ''
 
   return (
-    <div style={{ width: '100%', padding: '2rem 1.25rem 6rem', maxWidth: 600, margin: '0 auto', animation: 'fade-in 0.3s ease' }}>
+    <div style={{ width: '100%', padding: '1.25rem 1rem 7rem', maxWidth: 600, margin: '0 auto', animation: 'fade-in 0.3s ease' }}>
       <VoltarLink />
 
       {/* Header do Pedido */}
@@ -155,43 +155,43 @@ export default function PedidoPage() {
         style={{
           background: 'linear-gradient(135deg, #1c1208, #322514)',
           borderRadius: '1rem',
-          padding: '2rem 1.5rem',
+          padding: '1.25rem',
           color: 'white',
-          marginBottom: '2rem',
+          marginBottom: '1rem',
           position: 'relative',
           overflow: 'hidden'
         }}
       >
         <div style={{ position: 'relative', zIndex: 1 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-            <span style={{ color: '#d9c4a0', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.5px', textTransform: 'uppercase' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+            <span style={{ color: '#d9c4a0', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.5px', textTransform: 'uppercase' }}>
               Pedido #{pedido.numeroPedido}
             </span>
           </div>
 
           <h1
             style={{
-              fontSize: '1.75rem',
+              fontSize: '1.35rem',
               fontWeight: 700,
-              margin: '0 0 0.75rem',
+              margin: '0 0 0.5rem',
               color: 'white',
               lineHeight: 1.2
             }}
           >
             {info.label}
           </h1>
-          <p style={{ color: '#e8d5b0', fontSize: '1rem', margin: '0 0 1.5rem', lineHeight: 1.5 }}>
+          <p style={{ color: '#e8d5b0', fontSize: '0.85rem', margin: '0 0 1rem', lineHeight: 1.4 }}>
             {info.descricao}
           </p>
 
-          <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1.5rem' }}>
+          <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '0.875rem' }}>
             <div>
-              <p style={{ fontSize: '0.75rem', color: '#b89470', margin: '0 0 0.25rem' }}>Cliente</p>
-              <p style={{ fontSize: '0.9rem', color: 'white', margin: 0, fontWeight: 500 }}>{pedido.cliente.nome}</p>
+              <p style={{ fontSize: '0.7rem', color: '#b89470', margin: '0 0 0.2rem' }}>Cliente</p>
+              <p style={{ fontSize: '0.85rem', color: 'white', margin: 0, fontWeight: 500 }}>{pedido.cliente.nome}</p>
             </div>
             <div>
-              <p style={{ fontSize: '0.75rem', color: '#b89470', margin: '0 0 0.25rem' }}>Total</p>
-              <p style={{ fontSize: '0.9rem', color: 'var(--primaria)', margin: 0, fontWeight: 700 }}>{formatarMoeda(pedido.total)}</p>
+              <p style={{ fontSize: '0.7rem', color: '#b89470', margin: '0 0 0.2rem' }}>Total</p>
+              <p style={{ fontSize: '0.85rem', color: 'var(--primaria)', margin: 0, fontWeight: 700 }}>{formatarMoeda(pedido.total)}</p>
             </div>
           </div>
         </div>
@@ -199,14 +199,13 @@ export default function PedidoPage() {
 
       {/* Tracker de Status */}
       <div style={cardStyle}>
-        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1c1208', margin: '0 0 2rem' }}>
+        <h2 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#1c1208', margin: '0 0 1.25rem' }}>
           Acompanhamento
         </h2>
 
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0', position: 'relative' }}>
           {ordemEfetiva.map((st, idx) => {
             const isAtivo = idx === idxAtual
-            const isConcluido = idx < idxAtual
             const stepInfo = statusInfo[st]
 
             return (
@@ -226,9 +225,9 @@ export default function PedidoPage() {
                     style={{
                       position: 'absolute',
                       left: 0,
-                      top: 24,
+                      top: 18,
                       right: '50%',
-                      height: 3,
+                      height: 2.5,
                       background: idx <= idxAtual ? '#2e7d32' : '#f0e4d0',
                       transition: 'background 0.5s ease',
                       zIndex: 0
@@ -241,9 +240,9 @@ export default function PedidoPage() {
                     style={{
                       position: 'absolute',
                       right: 0,
-                      top: 24,
+                      top: 18,
                       left: '50%',
-                      height: 3,
+                      height: 2.5,
                       background: idx < idxAtual ? '#2e7d32' : '#f0e4d0',
                       transition: 'background 0.5s ease',
                       zIndex: 0
@@ -254,8 +253,8 @@ export default function PedidoPage() {
                 {/* Ícone */}
                 <div
                   style={{
-                    width: 52,
-                    height: 52,
+                    width: 38,
+                    height: 38,
                     borderRadius: '50%',
                     display: 'flex',
                     alignItems: 'center',
@@ -264,32 +263,35 @@ export default function PedidoPage() {
                     zIndex: 1,
                     background: idx <= idxAtual ? '#2e7d32' : 'white',
                     color: idx <= idxAtual ? 'white' : '#b89470',
-                    border: idx <= idxAtual ? 'none' : '2px solid #f0e4d0',
-                    transition: 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                    transform: !pedidoFinalizado && isAtivo ? 'scale(1.1)' : 'scale(1)'
+                    border: idx <= idxAtual ? 'none' : '1.5px solid #f0e4d0',
+                    transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                    transform: !pedidoFinalizado && isAtivo ? 'scale(1.08)' : 'scale(1)'
                   }}
                 >
-                  {stepInfo.icon}
+                  {/* Reduzindo tamanho do ícone proporcionalmente */}
+                  <span style={{ display: 'flex', transform: 'scale(0.8)' }}>
+                    {stepInfo.icon}
+                  </span>
                 </div>
 
                 {/* Label */}
                 <p
                   style={{
-                    fontSize: '0.75rem',
+                    fontSize: '0.7rem',
                     fontWeight: isAtivo ? 700 : 500,
                     color: idx <= idxAtual ? '#2e7d32' : '#888597',
                     textAlign: 'center',
-                    margin: '0.75rem 0 0',
-                    lineHeight: 1.3,
-                    padding: '0 4px',
-                    transition: 'color 0.5s ease',
+                    margin: '0.5rem 0 0',
+                    lineHeight: 1.25,
+                    padding: '0 2px',
+                    transition: 'color 0.4s ease',
                   }}
                 >
                   {stepInfo.label}
                 </p>
                 {/* Horário */}
                 {idx <= idxAtual && (
-                  <p style={{ fontSize: '0.7rem', color: '#888597', margin: '0.25rem 0 0', textAlign: 'center' }}>
+                  <p style={{ fontSize: '0.65rem', color: '#888597', margin: '0.2rem 0 0', textAlign: 'center' }}>
                     {st === 'recebido'
                       ? formatarTempo(pedido.criadoEm)
                       : (() => {
@@ -307,42 +309,42 @@ export default function PedidoPage() {
           <div
             style={{
               background: '#fdfaf5',
-              borderRadius: '0.75rem',
-              padding: '0.75rem',
-              marginTop: '2rem',
+              borderRadius: '0.5rem',
+              padding: '0.5rem 0.75rem',
+              marginTop: '1.25rem',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '0.5rem',
+              gap: '0.375rem',
             }}
           >
-            <span style={{ animation: 'pulse-dourado 1.5s infinite', display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: 'var(--primaria)' }} />
-            <span style={{ fontSize: '0.85rem', color: '#9a7050', fontWeight: 500 }}>
+            <span style={{ animation: 'pulse-dourado 1.5s infinite', display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: 'var(--primaria)' }} />
+            <span style={{ fontSize: '0.75rem', color: '#9a7050', fontWeight: 500 }}>
               Atualizando automaticamente
             </span>
           </div>
         )}
       </div>
 
-      {/* Contato Suporte (movido para logo abaixo do acompanhamento) */}
+      {/* Contato Suporte */}
       <a
         href={`https://wa.me/55${whatsappLoja}?text=Olá! Estou acompanhando meu pedido %23${pedido.numeroPedido}`}
         target="_blank"
         rel="noopener noreferrer"
-        style={{ textDecoration: 'none', display: 'block', marginBottom: '1.5rem' }}
+        style={{ textDecoration: 'none', display: 'block', marginBottom: '1rem' }}
       >
         <button
           id="btn-whatsapp-suporte"
           className="btn-elevate"
           style={{
             width: '100%',
-            padding: '1.125rem',
+            padding: '0.875rem 1rem',
             borderRadius: '0.75rem',
             border: 'none',
             background: '#25D366',
             color: 'white',
             fontWeight: 700,
-            fontSize: '1.05rem',
+            fontSize: '0.95rem',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
@@ -350,7 +352,7 @@ export default function PedidoPage() {
             gap: '0.5rem',
           }}
         >
-          <MessageCircle size={22} /> Falar com o Estabelecimento
+          <MessageCircle size={18} /> Falar com o Estabelecimento
         </button>
       </a>
 
@@ -365,50 +367,50 @@ export default function PedidoPage() {
             alignItems: 'center',
             background: '#fdfaf5',
             border: 'none',
-            padding: '1.25rem 1.5rem',
+            padding: '0.875rem 1.25rem',
             cursor: 'pointer',
-            fontSize: '1.1rem',
+            fontSize: '0.95rem',
             fontWeight: 700,
             color: '#1c1208',
           }}
         >
           Detalhes do Pedido
-          {detalhesAbertos ? <ChevronUp size={20} color="#1c1208" /> : <ChevronDown size={20} color="#1c1208" />}
+          {detalhesAbertos ? <ChevronUp size={18} color="#1c1208" /> : <ChevronDown size={18} color="#1c1208" />}
         </button>
 
         {detalhesAbertos && (
-          <div style={{ padding: '1.5rem', animation: 'fade-in 0.2s ease', borderTop: '1px solid #f0e4d0' }}>
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#1c1208', margin: '0 0 1.25rem' }}>Itens do Pedido</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ padding: '1.25rem', animation: 'fade-in 0.2s ease', borderTop: '1px solid #f0e4d0' }}>
+            <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#1c1208', margin: '0 0 1rem' }}>Itens do Pedido</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {pedido.itens.map((item: any, idx: number) => (
                 <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.5rem' }}>
                   <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', flex: 1, paddingRight: '0.5rem' }}>
-                    <span style={{ color: '#1c1208', fontSize: '0.95rem', fontWeight: 600, flex: 1, lineHeight: 1.3 }}>
+                    <span style={{ color: '#1c1208', fontSize: '0.85rem', fontWeight: 600, flex: 1, lineHeight: 1.3 }}>
                       {item.produto.nome}
                     </span>
-                    <span style={{ fontSize: '0.85rem', color: '#a09d96', fontWeight: 500, flexShrink: 0, marginTop: '2px' }}>
+                    <span style={{ fontSize: '0.8rem', color: '#888597', fontWeight: 500, flexShrink: 0, marginTop: '1px' }}>
                       {item.quantidade}x
                     </span>
                   </div>
-                  <span style={{ fontWeight: 600, color: '#1c1208', fontSize: '0.95rem', flexShrink: 0, marginTop: '2px' }}>
+                  <span style={{ fontWeight: 600, color: '#1c1208', fontSize: '0.85rem', flexShrink: 0, marginTop: '1px' }}>
                     {formatarMoeda(item.produto.preco * item.quantidade)}
                   </span>
                 </div>
               ))}
             </div>
 
-            <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px dashed #d9c4a0', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-               <div style={{ display: 'flex', justifyContent: 'space-between', color: '#555260', fontSize: '0.9rem' }}>
+            <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px dashed #d9c4a0', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+               <div style={{ display: 'flex', justifyContent: 'space-between', color: '#555260', fontSize: '0.85rem' }}>
                  <span>Subtotal</span>
                  <span>{formatarMoeda(pedido.subtotal)}</span>
                </div>
                {pedido.cliente.tipoEntrega === 'entrega' && (
-                 <div style={{ display: 'flex', justifyContent: 'space-between', color: '#555260', fontSize: '0.9rem' }}>
+                 <div style={{ display: 'flex', justifyContent: 'space-between', color: '#555260', fontSize: '0.85rem' }}>
                    <span>Taxa de Entrega</span>
                    <span>{formatarMoeda(pedido.taxaEntrega)}</span>
                  </div>
                )}
-               <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, fontSize: '1.15rem', color: '#1c1208', marginTop: '0.5rem' }}>
+               <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, fontSize: '1rem', color: '#1c1208', marginTop: '0.25rem' }}>
                  <span>Total</span>
                  <span style={{ color: '#2e7d32' }}>{formatarMoeda(pedido.total)}</span>
                </div>
@@ -417,7 +419,7 @@ export default function PedidoPage() {
         )}
       </div>
       {patrocinadorRandom && (
-        <div style={{ marginBottom: '1.5rem', animation: 'fade-in 0.4s ease' }}>
+        <div style={{ marginBottom: '1rem', animation: 'fade-in 0.4s ease' }}>
           <PatrocinadorCard patrocinador={patrocinadorRandom} />
         </div>
       )}
