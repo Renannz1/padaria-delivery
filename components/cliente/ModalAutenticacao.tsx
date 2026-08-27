@@ -315,7 +315,6 @@ export default function ModalAutenticacao({ aoSucesso, aoFechar }: Propriedades)
                     }}
                     placeholder="(11) 99999-9999"
                     autoComplete="tel"
-                    autoFocus
                   />
                 </div>
                 {erros.telefone && (
@@ -375,7 +374,6 @@ export default function ModalAutenticacao({ aoSucesso, aoFechar }: Propriedades)
                     }}
                     placeholder="000000"
                     autoComplete="one-time-code"
-                    autoFocus
                   />
                 </div>
                 {erros.codigo && (
@@ -474,7 +472,6 @@ export default function ModalAutenticacao({ aoSucesso, aoFechar }: Propriedades)
                     }}
                     placeholder="Ex: Maria dos Santos"
                     autoComplete="name"
-                    autoFocus
                   />
                 </div>
                 {erros.nome && (
